@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<block>
+  <name>TX Parameters modification</name>
+  <key>lora_sdr_tags_param_dyn</key>
+  <category>[LoRa_TX]</category>
+  <import>import lora_sdr</import>
+  <make>lora_sdr.tags_param_dyn()</make>
+  
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <sink>
+    <name>TX_cmd</name>
+    <type>message</type>
+  </sink>
+
+
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+  <doc>
+    Add tags to the un-modified byte stream with parameters key and new value, 
+    Parameters can then be modified by each block within the TX chain at the beggining of the frame 
+  </doc>
+</block>

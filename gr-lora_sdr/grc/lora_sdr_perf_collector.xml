@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<block>
+  <name>Performance Collector</name>
+  <key>lora_sdr_perf_collector</key>
+  <category>[LoRa_RX]</category>
+  <import>import lora_sdr</import>
+  <make>lora_sdr.perf_collector($sf, $udp_rx_port)</make>
+  <param>
+    <name>SF</name>
+    <key>sf</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>UDP RX port</name>
+    <key>udp_rx_port</key>
+    <type>int</type>
+  </param>
+
+
+  <sink>
+    <name>CR</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>err_corrected</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>err_detected</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>SNR</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>MSG_Energy</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>Noise_Energy</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>snr_avg</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>msg_avg</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>pay_len</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>valid_msg</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>msg</name>
+    <type>message</type>
+  </sink>
+
+  <doc>
+    Gather all needed information for performance evaluation, compile it and send it through JSON format on UDP RX interface
+  </doc>
+</block>

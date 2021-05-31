@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<block>
+  <name>General Supervisor</name>
+  <key>lora_sdr_general_supervisor</key>
+  <category>[LoRa_TX]</category>
+  <import>import lora_sdr</import>
+  <make>lora_sdr.general_supervisor()</make>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>GS_msg</name>
+    <type>message</type>
+  </source>
+  <source>
+    <name>GS_tx_cmd</name>
+    <type>message</type>
+  </source>
+  <source>
+    <name>GS_sink_cmd</name>
+    <type>message</type>
+  </source>
+  <source>
+    <name>GS_source_cmd</name>
+    <type>message</type>
+  </source>
+
+  <doc>
+    Receive commands and dispatch them to the TX chain, the USRP sink or the USRP source 
+  </doc>
+</block>

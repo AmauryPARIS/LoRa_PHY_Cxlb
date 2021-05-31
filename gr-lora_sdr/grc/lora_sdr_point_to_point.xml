@@ -1,0 +1,56 @@
+<block>
+  <name>Point to point</name>
+  <key>lora_sdr_point_to_point</key>
+  <category>[LORA_SDR]</category>
+  <import>import lora_sdr</import>
+  <make>lora_sdr.point_to_point($node_id, $pay_len, $waiting_ack_time, $gateway, $full_mesh, $WAIT_ACK)</make>
+  <param>
+    <name>Node_id</name>
+    <key>node_id</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Pay_len</name>
+    <key>pay_len</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Wainting ack time</name>
+    <key>waiting_ack_time</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Gateway</name>
+    <key>gateway</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Full_mesh</name>
+    <key>full_mesh</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Wait_Ack</name>
+    <key>WAIT_ACK</key>
+    <type>raw</type>
+  </param>
+  <sink>
+    <name>received_msg</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>trigger_msg</name>
+    <type>message</type>
+  </sink>
+  <sink>
+    <name>trigger_stats</name>
+    <type>message</type>
+  </sink>
+  <source>
+    <name>msg</name>
+    <type>message</type>
+  </source>
+  <doc>
+    Create either a point to point communication, a mesh network, or gateway network 
+</doc>
+</block>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<block>
+  <name>Energy Evaluation</name>
+  <key>lora_sdr_pwr_est</key>
+  <category>[LoRa_RX]</category>
+  <import>import lora_sdr</import>
+  <make>lora_sdr.pwr_est($samp_rate, $bandwidth, $sf, $noise_elem, $history_avg)</make>
+    <param>
+    <name>Sample rate</name>
+    <key>samp_rate</key>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Bandwidth</name>
+    <key>bandwidth</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Spreading Factor</name>
+    <key>sf</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Number of Noise Elements</name>
+    <key>noise_elem</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Number of Messages for AVG</name>
+    <key>history_avg</key>
+    <type>int</type>
+  </param>
+  <sink>
+     <name>in</name>
+     <type>complex</type>
+     <vlen>2**${sf}</vlen>
+   </sink>
+  <source>
+    <name>snr_avg</name>
+    <type>message</type>
+  </source>
+  <source>
+    <name>msg_avg</name>
+    <type>message</type>
+  </source>
+  <source>
+    <name>SNR</name>
+    <type>message</type>
+  </source>
+  <source>
+    <name>MSG_Energy</name>
+    <type>message</type>
+  </source>
+  <source>
+    <name>Noise_Energy</name>
+    <type>message</type>
+  </source>
+
+  <doc>
+    Compute multiple energy indicator and return it after each demodulated message
+  </doc>
+</block>
