@@ -1,7 +1,7 @@
 # Don't track content of these folders
 apps/
 build/
-
+gr-utils_lora/
 
 # Compiled source #
 ###################

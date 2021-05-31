@@ -114,32 +114,25 @@ namespace gr {
       int i = 0;
       std::string value;
       set_tag_propagation_policy(TPP_DONT);
-      //ofstream myfile;
-      //myfile.open ("/root/log.txt", fstream::app);
+
       
       for (size_t i = 0; i < input_items.size(); i++) {
         abs_N = nitems_read(i);
         end_N = abs_N + 1;
-        //std::cout << "energy tag gate :" << abs_N << "->" << end_N << '\n';
         tags.clear();
         get_tags_in_range(tags, 0, abs_N, end_N);
         for (it = tags.begin(); it != tags.end(); ++it) {
           
           if (pmt::symbol_to_string((*it).key) == "state"){
-            //std::cout << "energy tag :" << pmt::symbol_to_string((*it).key) << "->" << pmt::symbol_to_string((*it).value) << '\n';
             value = pmt::symbol_to_string((*it).value);
             if (value == "FRAC_CFO_CORREC" || value == "SYNC"){ 
               // Message state
               m_count_message_symbol++;
               m_current_message_energy += compute_energy(in);
               
-              //myfile << "PWR message - m_current_message_energy : " << m_current_message_energy << " | m_count_message_symbol : " << m_count_message_symbol  << " \n";
-
             }
             else if (value == "MSG_OVER"){ // End of message - "in" samples are noise
 
-              //std::cout << "MSG Over - energy" << (*it).offset << '\n';
-              
               // SNR COMPUTATION
               m_current_message_energy = m_current_message_energy / (m_count_message_symbol * m_samples_per_symbol);
               for (int y = m_index_noise_sample_energy_history - m_margin_noise_symbol; y < m_index_noise_sample_energy_history; y++){
@@ -148,8 +141,7 @@ namespace gr {
               }
               m_current_noise_energy = std::accumulate(m_noise_sample_energy_history.begin(), m_noise_sample_energy_history.end(), (float)0);
               m_current_noise_energy = m_current_noise_energy / (m_count_noise_symbol * m_samples_per_symbol);
-              //myfile << "PWR end - m_current_message_energy : " << m_current_message_energy << " | m_current_noise_energy : " << m_current_noise_energy << '\n';
-              
+   
               m_message_energy_history[m_index_history] = m_current_message_energy;
               m_noise_energy_history[m_index_history] = m_current_noise_energy;
               m_current_snr = 10*log(m_current_message_energy) - 10*log(m_current_noise_energy);
@@ -174,7 +166,6 @@ namespace gr {
               float cum_noise_energy = 0;
               if (m_average_computable) {
                 for (int i = 0; i < m_history_avg; i++){
-                  //myfile << "PWR end - i : " << i << " | m_message_energy_history[i] : " << m_message_energy_history[i] << " | m_noise_energy_history[i] : " << m_noise_energy_history[i] << '\n';
                   cum_msg_energy += m_message_energy_history[i];
                   cum_noise_energy += m_noise_energy_history[i];
                 }
@@ -194,15 +185,11 @@ namespace gr {
               m_index_noise_sample_energy_history = (m_index_noise_sample_energy_history + 1 == m_count_noise_symbol + m_margin_noise_symbol ? 0: m_index_noise_sample_energy_history + 1);
               m_noise_sample_energy_history[m_index_noise_sample_energy_history] = compute_energy(in);
               
-              //myfile << "PWR noise - m_index_noise_sample_energy_history : " << m_index_noise_sample_energy_history << " | m_noise_sample_energy_history[m_index_noise_sample_energy_history] : " << m_noise_sample_energy_history[m_index_noise_sample_energy_history] << '\n';
             }
           }
         }
         
       }
-
-
-      //myfile.close();
 
       consume_each(1);
       return 0;

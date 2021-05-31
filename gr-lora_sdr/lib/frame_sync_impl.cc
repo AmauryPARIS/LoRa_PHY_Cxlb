@@ -507,7 +507,7 @@ namespace gr {
                   symbol_cnt++;
               }
               else{
-                      //std::cout << "Frame SYNC - MSG over" << tag.offset << '\n';
+
                       tag.value = pmt::string_to_symbol("MSG_OVER");
                       add_item_tag(OUT_ALL, tag); 
                       m_state = DETECT;
@@ -525,7 +525,7 @@ namespace gr {
               break;
           }
         }
-        // std::cout << "Frame sync tag :" << tag.key << "->" << tag.value << " | offset : " << tag.offset << '\n';
+
         consume_each(items_to_consume);
         return WORK_CALLED_PRODUCE;
       }
