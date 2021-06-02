@@ -35,7 +35,6 @@ install(FILES
     lora_sdr_frame_sync.xml
     lora_sdr_deinterleaver.xml
     lora_sdr_err_measures.xml
-    lora_sdr_point_to_point.xml
     lora_sdr_tags_param_dyn.xml
     lora_sdr_perf_collector.xml
     lora_sdr_general_supervisor.xml

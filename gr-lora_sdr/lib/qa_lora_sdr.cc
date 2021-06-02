@@ -26,14 +26,12 @@
  */
 
 #include "qa_lora_sdr.h"
-#include "qa_point_to_point.h"
 #include "qa_pwr_est.h"
 
 CppUnit::TestSuite *
 qa_lora_sdr::suite()
 {
   CppUnit::TestSuite *s = new CppUnit::TestSuite("lora_sdr");
-  s->addTest(gr::lora_sdr::qa_point_to_point::suite());
   s->addTest(gr::lora_sdr::qa_pwr_est::suite());
 
   return s;

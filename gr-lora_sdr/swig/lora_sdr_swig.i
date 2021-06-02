@@ -26,7 +26,6 @@
 #include "lora_sdr/frame_sync.h"
 #include "lora_sdr/deinterleaver.h"
 #include "lora_sdr/err_measures.h"
-#include "lora_sdr/point_to_point.h"
 #include "lora_sdr/pwr_est.h"
 %}
 
@@ -73,8 +72,6 @@ GR_SWIG_BLOCK_MAGIC2(lora_sdr, frame_sync);
 GR_SWIG_BLOCK_MAGIC2(lora_sdr, deinterleaver);
 %include "lora_sdr/err_measures.h"
 GR_SWIG_BLOCK_MAGIC2(lora_sdr, err_measures);
-%include "lora_sdr/point_to_point.h"
-GR_SWIG_BLOCK_MAGIC2(lora_sdr, point_to_point);
 
 %include "lora_sdr/pwr_est.h"
 GR_SWIG_BLOCK_MAGIC2(lora_sdr, pwr_est);

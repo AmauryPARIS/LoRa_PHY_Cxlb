@@ -40,6 +40,5 @@ install(FILES
     frame_sync.h
     deinterleaver.h
     err_measures.h
-    point_to_point.h
     pwr_est.h DESTINATION include/lora_sdr
 )

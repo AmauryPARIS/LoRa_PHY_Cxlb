@@ -94,14 +94,14 @@ class general_supervisor(gr.basic_block):
             else:
                 print("TX UDP General - Unknown cmd")
 
-        if data_to_transmit:
-            self.message_port_pub(pmt.intern('GS_msg'), pmt.intern(str(data_to_transmit)))
         if tx_parameters != "":
             self.message_port_pub(pmt.intern('GS_tx_cmd'), pmt.intern(tx_parameters))
         if sink:
             self.message_port_pub(pmt.intern('GS_sink_cmd'), sink_cmd)
         if source:
             self.message_port_pub(pmt.intern('GS_source_cmd'), source_cmd)
+        if data_to_transmit:
+            self.message_port_pub(pmt.intern('GS_msg'), pmt.intern(str(data_to_transmit)))
 
 
         self.consume_each(len(input_items[0]))

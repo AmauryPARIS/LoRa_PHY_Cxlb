@@ -44,7 +44,6 @@ list(APPEND lora_sdr_sources
     frame_sync_impl.cc
     deinterleaver_impl.cc
     err_measures_impl.cc
-    point_to_point_impl.cc
     pwr_est_impl.cc )
 
 set(lora_sdr_sources "${lora_sdr_sources}" PARENT_SCOPE)
@@ -79,7 +78,6 @@ list(APPEND test_lora_sdr_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/test_lora_sdr.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/qa_lora_sdr.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/qa_pwr_est.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/qa_point_to_point.cc
 )
 
 add_executable(test-lora_sdr ${test_lora_sdr_sources})

@@ -24,22 +24,13 @@ dyn_parameters = {  "CR" : "Coding Rate",
                 } 
 cmd_dict = {}
 
-cmd_dict_test = {   "CR" : "3", 
-                    "SF" : "8",
-                    "GTX": "10", 
-                    "GRX": "10",
-                    "FTX": "900e6",
-                    "FRX": "900e6",
-                    "MSG": "In cortexlab we trust"
-                } 
-
 # Init PHY layer in GNU Radio
-cmd_dict = {    "CR" : "4", 
-                "SF" : "8",
-                "GTX": "60", 
-                "GRX": "60",
-                "FTX": "710e6",
-                "FRX": "700e6"
+cmd_dict = {    #"CR" : "4", 
+                #"SF" : "8",
+                #"GTX": "60", 
+                #"GRX": "60",
+                "FTX": "910e6",
+                "FRX": "900e6"
             } 
 socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 socket_tx.connect((IP_ADDRESS, PORT_NO_TX))
@@ -92,10 +83,6 @@ while(True):
         cmd_dict.update({cmd:param_value})
         print("Command added to list : " + str(cmd_dict) + "\n")
 
-    elif cmd == "set":
-        cmd_dict = cmd_dict_test
-        print("Command added to list : " + str(cmd_dict) + "\n")
-        
     else:
         print("Unknown command, please try again\n")
 

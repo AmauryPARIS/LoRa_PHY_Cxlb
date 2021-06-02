@@ -27,6 +27,11 @@
 #include <numeric>
 #include <cmath>        // std::abs
 
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+
 namespace gr {
   namespace lora_sdr {
 
@@ -50,7 +55,7 @@ namespace gr {
       m_bw                                =   bandwidth;
       m_count_noise_symbol                =   noise_elem;
       m_history_avg                       =   history_avg;
-      m_margin_noise_symbol               =   10; // To avoid computing preamble symbol in noise energy (8 upchirps + 2 margin)
+      m_margin_noise_symbol               =   50; // To avoid computing preamble symbol in noise energy 
 
       m_index_history                     =   0;
       m_count_message_symbol              =   0;
@@ -114,7 +119,6 @@ namespace gr {
       int i = 0;
       std::string value;
       set_tag_propagation_policy(TPP_DONT);
-
       
       for (size_t i = 0; i < input_items.size(); i++) {
         abs_N = nitems_read(i);
@@ -125,23 +129,26 @@ namespace gr {
           
           if (pmt::symbol_to_string((*it).key) == "state"){
             value = pmt::symbol_to_string((*it).value);
-            if (value == "FRAC_CFO_CORREC" || value == "SYNC"){ 
-              // Message state
+            if (value == "FRAC_CFO_CORREC"){ 
+              // Message state if (value == "FRAC_CFO_CORREC" || value == "SYNC"){ 
+              
               m_count_message_symbol++;
               m_current_message_energy += compute_energy(in);
-              
+
             }
             else if (value == "MSG_OVER"){ // End of message - "in" samples are noise
 
               // SNR COMPUTATION
               m_current_message_energy = m_current_message_energy / (m_count_message_symbol * m_samples_per_symbol);
-              for (int y = m_index_noise_sample_energy_history - m_margin_noise_symbol; y < m_index_noise_sample_energy_history; y++){
+
+              for (int y = m_index_noise_sample_energy_history +1 - m_margin_noise_symbol; y < m_index_noise_sample_energy_history+1; y++){
                 // Erase noise value that match preamble before SYNC state
                 m_noise_sample_energy_history[mod(y,(m_count_noise_symbol + m_margin_noise_symbol))] = 0;
               }
+
               m_current_noise_energy = std::accumulate(m_noise_sample_energy_history.begin(), m_noise_sample_energy_history.end(), (float)0);
               m_current_noise_energy = m_current_noise_energy / (m_count_noise_symbol * m_samples_per_symbol);
-   
+
               m_message_energy_history[m_index_history] = m_current_message_energy;
               m_noise_energy_history[m_index_history] = m_current_noise_energy;
               m_current_snr = 10*log(m_current_message_energy) - 10*log(m_current_noise_energy);
@@ -184,7 +191,6 @@ namespace gr {
               // Noise state
               m_index_noise_sample_energy_history = (m_index_noise_sample_energy_history + 1 == m_count_noise_symbol + m_margin_noise_symbol ? 0: m_index_noise_sample_energy_history + 1);
               m_noise_sample_energy_history[m_index_noise_sample_energy_history] = compute_energy(in);
-              
             }
           }
         }
