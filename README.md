@@ -12,7 +12,6 @@ This adaptation allows end-users to connect any existing upper layer to the phys
 - Modifying the following parameters:
   - Spreading factors: 7-12 (without reduced rate mode)
   - Coding rates: 0-4
-  - Implicit and explicit header mode **A VERIFIER**
   - Gain for RX and TX chains 
   - RX and TX frequencies
 
@@ -20,6 +19,7 @@ This adaptation allows end-users to connect any existing upper layer to the phys
 
 - Verification of payload CRC
 - Verification of explicit header checksum
+- Implicit and explicit header mode (modification inside .grc file needed)
 
 This interface can be used with the [FIT/CorteXlab radiotestbed](http://www.cortexlab.fr/), in order to have a stable environment, enabling replicable experiments.
 
