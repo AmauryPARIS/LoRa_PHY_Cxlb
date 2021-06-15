@@ -60,7 +60,7 @@ The hierarchical blocks `hier_rx` and `hier_tx` python files should finally be g
 
 ## Usage
 
-The script `/gr-lora_sdr/apps/setpaths.sh` adds the pythonpaths required to run the generated python files for the current shell process. It has to be addapted accordingly to the installation folder, and should be executed with 
+The script `/gr-lora_sdr/apps/setpaths.sh` adds the pythonpaths required to run the generated python files for the current shell process. It has to be adapted accordingly to the installation folder, and should be executed with 
 `source setpaths.sh`
 
 ### Examples
