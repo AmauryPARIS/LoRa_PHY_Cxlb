@@ -75,7 +75,7 @@ The `lora_dyn_node.py` python script runs the LoRa physical layer with a transmi
 In order to show its utility, two basic python scripts are provided:
 
 - `udp_Node.py`: UDP node python script. Sends the message given by the user
-- `udp_BS.py`: UDP base station python script. Sends an acknoledgment). 
+- `udp_BS.py`: UDP base station python script. Sends an acknoledgment. 
   
 :warning: Both `udp_BS.py` and `udp_Node.py` have to be run with python3.
 
