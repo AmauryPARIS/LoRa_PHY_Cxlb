@@ -21,7 +21,8 @@ This adaptation allows end-users to connect any existing upper layer to the phys
 - Verification of explicit header checksum
 - Implicit and explicit header mode (modification inside .grc file needed)
 
-This interface can be used with the [FIT/CorteXlab radiotestbed](http://www.cortexlab.fr/), in order to have a stable environment, enabling replicable experiments.
+This interface can be used with the [FIT/CorteXlab radiotestbed](http://www.cortexlab.fr/), in order to have a stable environment, enabling replicable experiments. A tutorial is available on [CorteXlab's Wiki](https://wiki.cortexlab.fr/doku.php?id=gnu_radio_lora_dynamic_phy_layer) and uses a [docker image](https://hub.docker.com/r/estevep/lora_dyn_phy-cxlb) which includes this repository.
+If you are using this docker image, all the installation steps are already executed. Thus you can go directly to the examples section.
 
 ## Requirements
 
@@ -60,7 +61,7 @@ The hierarchical blocks `hier_rx` and `hier_tx` python files should finally be g
 
 ## Usage
 
-The script `/gr-lora_sdr/apps/setpaths.sh` adds the pythonpaths required to run the generated python files for the current shell process. It has to be addapted accordingly to the installation folder, and should be executed with 
+The script `/gr-lora_sdr/apps/setpaths.sh` adds the pythonpaths required to run the generated python files for the current shell process. It has to be adapted accordingly to the installation folder, and should be executed with 
 `source setpaths.sh`
 
 ### Examples
@@ -74,7 +75,7 @@ The `lora_dyn_node.py` python script runs the LoRa physical layer with a transmi
 In order to show its utility, two basic python scripts are provided:
 
 - `udp_Node.py`: UDP node python script. Sends the message given by the user
-- `udp_BS.py`: UDP base station python script. Sends an acknoledgment). 
+- `udp_BS.py`: UDP base station python script. Sends an acknoledgment. 
   
 :warning: Both `udp_BS.py` and `udp_Node.py` have to be run with python3.
 
