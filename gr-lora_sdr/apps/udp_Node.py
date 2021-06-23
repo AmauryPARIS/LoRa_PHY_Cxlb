@@ -19,10 +19,15 @@ dyn_parameters = {  "CR" : "Coding Rate",
                     "GRX": "Gain for RX chain",
                     "FTX": "USRP frequency for TX chain",
                     "FRX": "USRP frequency for RX chain",
-                    "MSG": "Data to transmit",
-                    "print" : "Print in GNURADIO current parameters"
+                    "MSG": "Data to transmit"
                 } 
+
+out_cmd = {
+                    "print" : "Print in GNURADIO current parameters"
+            }
+
 cmd_dict = {}
+out_dict = {}
 
 # Init PHY layer in GNU Radio
 cmd_dict = {    #"CR" : "4", 
@@ -42,10 +47,12 @@ cmd_dict.clear()
 
 for param_keys in dyn_parameters.keys():
     print(param_keys + " - " + dyn_parameters[param_keys])
+for out_keys in out_cmd.keys():
+    print(out_keys + " - " + out_cmd[out_keys])
 
 print("\n")
 while(True):
-    cmd = str(input("Enter the parameter OR \"send\" to send all stored commands :"))
+    cmd = str(input("Enter the parameter OR \"send\" to send all stored commands OR \"print\" to display the current parameters: "))
     if cmd == "send":
         if len(cmd_dict) != 0:
             socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -82,6 +89,15 @@ while(True):
         param_value = str(input("Enter the new value of the " + dyn_parameters[cmd] + " :"))
         cmd_dict.update({cmd:param_value})
         print("Command added to list : " + str(cmd_dict) + "\n")
+
+    elif cmd in out_cmd.keys():
+        out_dict.update({cmd:""})
+        socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        socket_tx.connect((IP_ADDRESS, PORT_NO_TX))
+        
+        socket_tx.send(bytes(json.dumps(out_dict), 'UTF-8'))
+        socket_tx.close()
+        out_dict.clear()
 
     else:
         print("Unknown command, please try again\n")
