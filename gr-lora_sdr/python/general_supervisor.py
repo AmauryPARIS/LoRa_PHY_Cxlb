@@ -84,13 +84,48 @@ class general_supervisor(gr.basic_block):
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))			
                 source = True
                 #self.top_block.set_RX_freq(float(newvalue))
-            elif cmd in ["CR", "SF"]:
+
+
+            # elif cmd in ["CR", "SF"]:
+            #     tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
+            elif cmd == "SF":
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
+                self.top_block.set_sf(int(newvalue))
+            elif cmd == "CR":
+                if not pmt.is_int(newvalue):
+                    # TODO: Add real error and way to return this error to the upper layer
+                    print("ERROR: Cannot set the coding rate to a non-integer value")
+                    return 1
+                if not int(newvalue) in range(1, 5):
+                    # TODO: Add real error and way to return this error to the upper layer
+                    print("ERROR: Can only set the coding rate to a integer value between 1 (corresponding to CR = 4/5) and 4 (corresponding to CR = 4/8)")
+                    return 1
+                tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
+                self.top_block.set_cr(int(newvalue))
+            elif cmd == "BW":
+                if not pmt.is_int(newvalue):
+                    # TODO: Add real error and way to return this error to the upper layer
+                    print("ERROR: Cannot set the bandwidth to a non-integer value")
+                    return 1
+                self.top_block.set_bw(int(newvalue)) 
+
+                # Sample rate is already set by set_bw
+                # self.top_block.set_samp_rate(int(newvalue)) 
+
+                # Prepare a BW tag
+                tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
+
+                # Debug print - TODO : erase
+                print("Debug: BW modification added to the tx_parameters list\n")
+
+
             elif cmd == "print":
                     print("FTX = " + str(self.top_block.uhd_usrp_sink_0.get_center_freq()) + "\n")
                     print("FRX = " + str(self.top_block.uhd_usrp_source_0.get_center_freq()) + "\n")
                     print("GTX = " + str(self.top_block.uhd_usrp_sink_0.get_gain()) + "\n")
                     print("GRX = " + str(self.top_block.uhd_usrp_source_0.get_gain()) + "\n")
+                    print("SF = " + str(self.top_block.get_sf()) + "\n")
+                    print("CR = " + str(self.top_block.get_cr()) + "\n")
             else:
                 print("TX UDP General - Unknown cmd")
 

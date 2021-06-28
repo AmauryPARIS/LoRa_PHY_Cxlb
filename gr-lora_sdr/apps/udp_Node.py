@@ -1,10 +1,10 @@
 import socket, json, time
 
 print("LORA Phy layer Python Node controler - GNU Radio\n")
-PORT_NO_TX = input("Enter your UDP TX port number (default = 6788) : ")
+PORT_NO_TX = input("Enter your UDP TX port number (default = 6788): ")
 if PORT_NO_TX == "":
     PORT_NO_TX = 6788
-PORT_NO_RX = input("Enter your UDP RX port number (default = 6790) : ")
+PORT_NO_RX = input("Enter your UDP RX port number (default = 6790): ")
 if PORT_NO_RX == "":
     PORT_NO_RX = 6790
 
@@ -75,8 +75,8 @@ while(True):
             #     received_msg = json.loads("".join([chr(item) for item in data]))
             #     print ("Message transmited !")
             #     for key in received_msg.keys():
-            #         print("     " + key + " : " + received_msg[key])
-            #     print ("Elapsed time : " + str(end - start) + " [scd]")
+            #         print("     " + key + ": " + received_msg[key])
+            #     print ("Elapsed time: " + str(end - start) + " [scd]")
             #     print("\n")
             #     received = True
 
@@ -86,9 +86,9 @@ while(True):
 
     elif cmd in dyn_parameters.keys(): 
         # Add verification of the param type (int/float/etc)
-        param_value = str(input("Enter the new value of the " + dyn_parameters[cmd] + " :"))
+        param_value = str(input("Enter the new value of the " + dyn_parameters[cmd] + ": "))
         cmd_dict.update({cmd:param_value})
-        print("Command added to list : " + str(cmd_dict) + "\n")
+        print("Command added to list: " + str(cmd_dict) + "\n")
 
     elif cmd in out_cmd.keys():
         out_dict.update({cmd:""})
