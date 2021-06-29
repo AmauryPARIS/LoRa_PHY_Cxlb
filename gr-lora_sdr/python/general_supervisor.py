@@ -102,7 +102,7 @@ class general_supervisor(gr.basic_block):
                     return 1
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
                 self.top_block.set_cr(int(newvalue))
-            elif cmd == "BW":
+            elif cmd == "BWTX":
                 if not pmt.is_int(newvalue):
                     # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Cannot set the bandwidth to a non-integer value")
@@ -116,7 +116,10 @@ class general_supervisor(gr.basic_block):
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
 
                 # Debug print - TODO : erase
-                print("Debug: BW modification added to the tx_parameters list\n")
+                print("DEBUG: BW modification added to the tx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")
+
+            elif cmd == "BWRX":
+                print("ERROR: not yet implemented")
 
 
             elif cmd == "print":
