@@ -19,7 +19,8 @@ dyn_parameters = {  "CR" : "Coding Rate",
                     "GRX": "Gain for RX chain",
                     "FTX": "USRP frequency for TX chain",
                     "FRX": "USRP frequency for RX chain",
-                    "MSG": "Data to transmit"
+                    "MSG": "Data to transmit",
+                    "BWTX": "Bandwidth for TX chain [WORK IN PROGRESS]"
                 } 
 
 out_cmd = {
