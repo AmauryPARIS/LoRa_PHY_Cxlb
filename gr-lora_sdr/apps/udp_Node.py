@@ -20,7 +20,7 @@ dyn_parameters = {  "CR" : "Coding Rate",
                     "FTX": "USRP frequency for TX chain",
                     "FRX": "USRP frequency for RX chain",
                     "MSG": "Data to transmit",
-                    "BWTX": "Bandwidth for TX chain [WORK IN PROGRESS]"
+                    "BWTX": "Bandwidth for TX chain [WORK IN PROGRESS]",
                     "BWRX": "Bandwidth for RX chain [WORK IN PROGRESS]"
                 } 
 
@@ -87,8 +87,12 @@ while(True):
             print("Your command list is empty\n")
 
     elif cmd in dyn_parameters.keys(): 
-        # Add verification of the param type (int/float/etc)
         param_value = str(input("Enter the new value of the " + dyn_parameters[cmd] + ": "))
+
+        # Verification of the param type (int/float/etc): all parameter values should be able to be converted to an integer 
+        # DONE in general_supervisor, however it doesn't show up in the upper layer terminal, only in the PHY one
+        # TODO: add a way to return an error/message from the PHY layer to the upper layer (return value given through a UDP socket for example)
+
         cmd_dict.update({cmd:param_value})
         print("Command added to list: " + str(cmd_dict) + "\n")
 

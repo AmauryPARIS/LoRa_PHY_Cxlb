@@ -62,12 +62,61 @@ class general_supervisor(gr.basic_block):
         source = False
         sink = False
 
+        int_param_cmd = [
+                            "CR",
+                            "SF",
+                        ]
+        float_param_cmd = [
+                            "GTX",
+                            "GRX",
+                            "FTX",
+                            "FRX",
+                            "BWTX",
+                            "BWRX"
+                        ]
+        no_param_cmd = ["print"]
+        str_param_cmd = ["MSG"]
+
         sink_cmd = pmt.make_dict()
         source_cmd = pmt.make_dict()
         
             
+
+        
         for cmd in list_cmd.keys():
             newvalue = list_cmd[cmd]
+
+            # Parameter type verification
+            # TODO: Add real error and way to return this error to the upper layer
+
+            if cmd in int_param_cmd:
+                try:
+                    int(newvalue)
+                except ValueError:
+                    print("{} value must be an integer".format(cmd))
+                    print("Processing the remaining commands\n")
+                    continue
+            
+            if cmd in float_param_cmd:
+                try:
+                    float(newvalue)
+                except ValueError:
+                    print("{} value must be a float".format(cmd))
+                    print("Processing the remaining commands\n")
+                    continue
+            
+            elif cmd in str_param_cmd:
+                if len(newvalue)<1:
+                    print("{} value cannot be an empty string".format(cmd))
+                    print("Processing the remaining commands\n")
+                    continue
+
+            elif cmd in no_param_cmd:
+                if len(newvalue)>0:
+                    print("{} value must be an empty string".format(cmd))
+                    print("Processing the remaining commands\n")
+                    continue
+
             if cmd == "GTX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("gain"), pmt.from_float(float(newvalue)))
                 sink = True
@@ -92,10 +141,12 @@ class general_supervisor(gr.basic_block):
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
                 self.top_block.set_sf(int(newvalue))
             elif cmd == "CR":
-                if not pmt.is_int(newvalue):
+                # if not pmt.is_integer(newvalue):
                     # TODO: Add real error and way to return this error to the upper layer
-                    print("ERROR: Cannot set the coding rate to a non-integer value")
-                    return 1
+                #     print("ERROR: Cannot set the coding rate to a non-integer value")
+                #     return 1
+                if not isinstance(newvalue, (int, float)):
+
                 if not int(newvalue) in range(1, 5):
                     # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Can only set the coding rate to a integer value between 1 (corresponding to CR = 4/5) and 4 (corresponding to CR = 4/8)")
@@ -103,11 +154,11 @@ class general_supervisor(gr.basic_block):
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
                 self.top_block.set_cr(int(newvalue))
             elif cmd == "BWTX":
-                if not pmt.is_int(newvalue):
+                if not pmt.is_integer(newvalue):
                     # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Cannot set the bandwidth to a non-integer value")
                     return 1
-                self.top_block.set_bw(int(newvalue)) 
+                self.top_block.set_bw(int(newvalue))
 
                 # Sample rate is already set by set_bw
                 # self.top_block.set_samp_rate(int(newvalue)) 
