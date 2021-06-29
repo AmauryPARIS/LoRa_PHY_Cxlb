@@ -141,12 +141,6 @@ class general_supervisor(gr.basic_block):
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
                 self.top_block.set_sf(int(newvalue))
             elif cmd == "CR":
-                # if not pmt.is_integer(newvalue):
-                    # TODO: Add real error and way to return this error to the upper layer
-                #     print("ERROR: Cannot set the coding rate to a non-integer value")
-                #     return 1
-                if not isinstance(newvalue, (int, float)):
-
                 if not int(newvalue) in range(1, 5):
                     # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Can only set the coding rate to a integer value between 1 (corresponding to CR = 4/5) and 4 (corresponding to CR = 4/8)")
