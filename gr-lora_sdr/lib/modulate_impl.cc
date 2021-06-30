@@ -89,7 +89,7 @@ namespace gr {
             }
             if (key == "BWTX"){
               m_bw = value;
-              m_samp_rate=samp_rate; // à modifier en m_samp = value si ça ne fonctionne pas
+              m_samp_rate = value;
               printf("DEBUG: Modulate sample rate = %lf", (float)(m_samp_rate)); 
               m_number_of_bins    =(uint32_t)(1u << m_sf);
               m_symbols_per_second = (double)m_bw/m_number_of_bins;
