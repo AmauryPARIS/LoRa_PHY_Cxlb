@@ -2001,7 +2001,7 @@
     </param>
     <param>
       <key>center_freq0</key>
-      <value>tx_freq</value>
+      <value>rx_freq</value>
     </param>
     <param>
       <key>dc_offs_enb0</key>
