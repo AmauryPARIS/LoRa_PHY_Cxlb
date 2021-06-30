@@ -153,11 +153,7 @@ class general_supervisor(gr.basic_block):
 
 
             elif cmd == "BWTX":
-                if not pmt.is_integer(newvalue):
-                    # TODO: Add real error and way to return this error to the upper layer
-                    print("ERROR: Cannot set the bandwidth to a non-integer value")
-                    return 1
-                self.top_block.set_bw(int(newvalue))
+                self.top_block.set_bw(float(newvalue))
 
                 # Sample rate is already set by set_bw
                 # self.top_block.set_samp_rate(int(newvalue)) 
