@@ -153,7 +153,7 @@ class general_supervisor(gr.basic_block):
 
 
             elif cmd == "BWTX":
-                self.top_block.set_bw(float(newvalue))
+                self.top_block.set_bw_tx(float(newvalue))
 
                 # Sample rate is already set by set_bw
                 # self.top_block.set_samp_rate(int(newvalue)) 
