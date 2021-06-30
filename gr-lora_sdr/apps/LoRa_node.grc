@@ -3076,7 +3076,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>uhd_usrp_source_1</value>
+      <value>uhd_usrp_source_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -3482,7 +3482,7 @@
     <sink_key>in</sink_key>
   </connection>
   <connection>
-    <source_block_id>uhd_usrp_source_1</source_block_id>
+    <source_block_id>uhd_usrp_source_0</source_block_id>
     <sink_block_id>interp_fir_filter_xxx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
@@ -3507,7 +3507,7 @@
   </connection>
   <connection>
     <source_block_id>virtual_source_2_0</source_block_id>
-    <sink_block_id>uhd_usrp_source_1</sink_block_id>
+    <sink_block_id>uhd_usrp_source_0</sink_block_id>
     <source_key>out</source_key>
     <sink_key>command</sink_key>
   </connection>
