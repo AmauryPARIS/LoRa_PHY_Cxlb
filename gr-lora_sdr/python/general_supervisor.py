@@ -120,19 +120,19 @@ class general_supervisor(gr.basic_block):
             if cmd == "GTX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("gain"), pmt.from_float(float(newvalue)))
                 sink = True
-                #self.top_block.set_TX_gain(float(newvalue))
+                self.top_block.set_TX_gain(float(newvalue))
             elif cmd == "GRX":
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("gain"), pmt.from_float(float(newvalue)))
                 source = True
-                #self.top_block.set_RX_gain(float(newvalue))
+                self.top_block.set_RX_gain(float(newvalue))
             elif cmd == "FTX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))	
                 sink = True		
-                #self.top_block.set_TX_freq(float(newvalue))
+                self.top_block.set_TX_freq(float(newvalue))
             elif cmd == "FRX":
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))			
                 source = True
-                #self.top_block.set_RX_freq(float(newvalue))
+                self.top_block.set_RX_freq(float(newvalue))
 
 
             # elif cmd in ["CR", "SF"]:
@@ -147,6 +147,11 @@ class general_supervisor(gr.basic_block):
                     return 1
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
                 self.top_block.set_cr(int(newvalue))
+
+                # Temporary: there should be a CRTX and at least one CRRX
+                # TODO: implement a way to add tags to the RX chain
+
+
             elif cmd == "BWTX":
                 if not pmt.is_integer(newvalue):
                     # TODO: Add real error and way to return this error to the upper layer

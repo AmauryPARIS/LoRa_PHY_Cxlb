@@ -44,15 +44,18 @@ class lora_dyn_node(gr.top_block):
         ##################################################
         # Variables
         ##################################################
-        self.bw = bw = 250000
+        self.bw_tx = bw_tx = 500000
+        self.bw_rx = bw_rx = 250000
         self.variable_function_probe_0 = variable_function_probe_0 = 0
-        self.samp_rate = samp_rate = bw
+        self.samp_rate_tx = samp_rate_tx = bw_tx
+        self.samp_rate_rx = samp_rate_rx = bw_rx
         self.pay_len = pay_len = 32
         self.mult_const = mult_const = 1
         self.impl_head = impl_head = False
         self.has_crc = has_crc = True
         self.cr = cr = 4
         self.TX_gain = TX_gain = 30
+        self.RX_gain = RX_gain = 20
 
         ##################################################
         # Blocks
@@ -71,20 +74,20 @@ class lora_dyn_node(gr.top_block):
         _variable_function_probe_0_thread.daemon = True
         _variable_function_probe_0_thread.start()
 
-        self.uhd_usrp_source_0 = uhd.usrp_source(
-        	",".join(('', '')),
+        self.uhd_usrp_source_1 = uhd.usrp_source(
+        	",".join(("", "")),
         	uhd.stream_args(
         		cpu_format="fc32",
         		channels=range(1),
         	),
         )
-        self.uhd_usrp_source_0.set_samp_rate(samp_rate)
-        self.uhd_usrp_source_0.set_center_freq(rx_freq, 0)
-        self.uhd_usrp_source_0.set_gain(20, 0)
-        self.uhd_usrp_source_0.set_antenna('RX2', 0)
-        self.uhd_usrp_source_0.set_bandwidth(bw, 0)
-        self.uhd_usrp_source_0.set_auto_dc_offset(True, 0)
-        self.uhd_usrp_source_0.set_auto_iq_balance(True, 0)
+        self.uhd_usrp_source_1.set_samp_rate(samp_rate_rx)
+        self.uhd_usrp_source_1.set_center_freq(tx_freq, 0)
+        self.uhd_usrp_source_1.set_gain(RX_gain, 0)
+        self.uhd_usrp_source_1.set_antenna('RX2', 0)
+        self.uhd_usrp_source_1.set_bandwidth(bw_rx, 0)
+        self.uhd_usrp_source_1.set_auto_dc_offset(True, 0)
+        self.uhd_usrp_source_1.set_auto_iq_balance(True, 0)
         self.uhd_usrp_sink_0 = uhd.usrp_sink(
         	",".join(('', '')),
         	uhd.stream_args(
@@ -92,31 +95,31 @@ class lora_dyn_node(gr.top_block):
         		channels=range(1),
         	),
         )
-        self.uhd_usrp_sink_0.set_samp_rate(samp_rate)
+        self.uhd_usrp_sink_0.set_samp_rate(samp_rate_tx)
         self.uhd_usrp_sink_0.set_center_freq(tx_freq, 0)
         self.uhd_usrp_sink_0.set_gain(TX_gain, 0)
         self.uhd_usrp_sink_0.set_antenna('TX/RX', 0)
-        self.uhd_usrp_sink_0.set_bandwidth(bw, 0)
+        self.uhd_usrp_sink_0.set_bandwidth(bw_tx, 0)
         self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,	-0.212206590789194,	-0.180063263231421,	3.89817183251938e-17	,0.300105438719035	,0.636619772367581	,0.900316316157106,	1	,0.900316316157106,	0.636619772367581,	0.300105438719035,	3.89817183251938e-17,	-0.180063263231421,	-0.212206590789194,	-0.128616616593872))
         self.interp_fir_filter_xxx_0.declare_sample_delay(0)
         self.hier_lora_tx_0 = hier_lora_tx(
-            bw=bw,
+            bw=bw_tx,
             cr=cr,
             has_crc=has_crc,
             impl_head=impl_head,
             mult_const=mult_const,
-            samp_rate=samp_rate,
+            samp_rate=samp_rate_tx,
             sf=sf,
         )
         self.hier_lora_rx_0 = hier_lora_rx(
-            bw=bw,
+            bw=bw_rx,
             cr=cr,
             has_crc=has_crc,
             hist_avg=hist_avg,
             impl_head=impl_head,
             noise_elem=noise_elem,
             pay_len=pay_len,
-            samp_rate=samp_rate,
+            samp_rate=samp_rate_rx,
             sf=sf,
             udp_rx_port=udp_rx_port,
         )
@@ -130,11 +133,11 @@ class lora_dyn_node(gr.top_block):
         self.msg_connect((self.lora_sdr_general_supervisor_0, 'GS_msg'), (self.hier_lora_tx_0, 'MSG'))
         self.msg_connect((self.lora_sdr_general_supervisor_0, 'GS_tx_cmd'), (self.hier_lora_tx_0, 'TX_cmd'))
         self.msg_connect((self.lora_sdr_general_supervisor_0, 'GS_sink_cmd'), (self.uhd_usrp_sink_0, 'command'))
-        self.msg_connect((self.lora_sdr_general_supervisor_0, 'GS_source_cmd'), (self.uhd_usrp_source_0, 'command'))
+        self.msg_connect((self.lora_sdr_general_supervisor_0, 'GS_source_cmd'), (self.uhd_usrp_source_1, 'command'))
         self.connect((self.blocks_udp_source_0, 0), (self.lora_sdr_general_supervisor_0, 0))
         self.connect((self.hier_lora_tx_0, 0), (self.uhd_usrp_sink_0, 0))
         self.connect((self.interp_fir_filter_xxx_0, 0), (self.hier_lora_rx_0, 0))
-        self.connect((self.uhd_usrp_source_0, 0), (self.interp_fir_filter_xxx_0, 0))
+        self.connect((self.uhd_usrp_source_1, 0), (self.interp_fir_filter_xxx_0, 0))
 
     def get_hist_avg(self):
         return self.hist_avg
@@ -155,7 +158,6 @@ class lora_dyn_node(gr.top_block):
 
     def set_rx_freq(self, rx_freq):
         self.rx_freq = rx_freq
-        self.uhd_usrp_source_0.set_center_freq(self.rx_freq, 0)
 
     def get_sf(self):
         return self.sf
@@ -170,6 +172,7 @@ class lora_dyn_node(gr.top_block):
 
     def set_tx_freq(self, tx_freq):
         self.tx_freq = tx_freq
+        self.uhd_usrp_source_1.set_center_freq(self.tx_freq, 0)
         self.uhd_usrp_sink_0.set_center_freq(self.tx_freq, 0)
 
     def get_udp_rx_port(self):
@@ -185,17 +188,23 @@ class lora_dyn_node(gr.top_block):
     def set_udp_tx_port(self, udp_tx_port):
         self.udp_tx_port = udp_tx_port
 
-    def get_bw(self):
-        return self.bw
+    def get_bw_tx(self):
+        return self.bw_tx
 
-    def set_bw(self, bw):
-        self.bw = bw
-        self.set_samp_rate(self.bw)
-        self.uhd_usrp_source_0.set_bandwidth(self.bw, 0)
-        self.uhd_usrp_source_0.set_bandwidth(self.bw, 1)
-        self.uhd_usrp_sink_0.set_bandwidth(self.bw, 0)
-        self.hier_lora_tx_0.set_bw(self.bw)
-        self.hier_lora_rx_0.set_bw(self.bw)
+    def set_bw_tx(self, bw_tx):
+        self.bw_tx = bw_tx
+        self.set_samp_rate_tx(self.bw_tx)
+        self.uhd_usrp_sink_0.set_bandwidth(self.bw_tx, 0)
+        self.hier_lora_tx_0.set_bw(self.bw_tx)
+
+    def get_bw_rx(self):
+        return self.bw_rx
+
+    def set_bw_rx(self, bw_rx):
+        self.bw_rx = bw_rx
+        self.set_samp_rate_rx(self.bw_rx)
+        self.uhd_usrp_source_1.set_bandwidth(self.bw_rx, 0)
+        self.hier_lora_rx_0.set_bw(self.bw_rx)
 
     def get_variable_function_probe_0(self):
         return self.variable_function_probe_0
@@ -203,15 +212,21 @@ class lora_dyn_node(gr.top_block):
     def set_variable_function_probe_0(self, variable_function_probe_0):
         self.variable_function_probe_0 = variable_function_probe_0
 
-    def get_samp_rate(self):
-        return self.samp_rate
+    def get_samp_rate_tx(self):
+        return self.samp_rate_tx
 
-    def set_samp_rate(self, samp_rate):
-        self.samp_rate = samp_rate
-        self.uhd_usrp_source_0.set_samp_rate(self.samp_rate)
-        self.uhd_usrp_sink_0.set_samp_rate(self.samp_rate)
-        self.hier_lora_tx_0.set_samp_rate(self.samp_rate)
-        self.hier_lora_rx_0.set_samp_rate(self.samp_rate)
+    def set_samp_rate_tx(self, samp_rate_tx):
+        self.samp_rate_tx = samp_rate_tx
+        self.uhd_usrp_sink_0.set_samp_rate(self.samp_rate_tx)
+        self.hier_lora_tx_0.set_samp_rate(self.samp_rate_tx)
+
+    def get_samp_rate_rx(self):
+        return self.samp_rate_rx
+
+    def set_samp_rate_rx(self, samp_rate_rx):
+        self.samp_rate_rx = samp_rate_rx
+        self.uhd_usrp_source_1.set_samp_rate(self.samp_rate_rx)
+        self.hier_lora_rx_0.set_samp_rate(self.samp_rate_rx)
 
     def get_pay_len(self):
         return self.pay_len
@@ -257,6 +272,14 @@ class lora_dyn_node(gr.top_block):
     def set_TX_gain(self, TX_gain):
         self.TX_gain = TX_gain
         self.uhd_usrp_sink_0.set_gain(self.TX_gain, 0)
+
+
+    def get_RX_gain(self):
+        return self.RX_gain
+
+    def set_RX_gain(self, RX_gain):
+        self.RX_gain = RX_gain
+        self.uhd_usrp_source_1.set_gain(self.RX_gain, 0)
 
 
 
