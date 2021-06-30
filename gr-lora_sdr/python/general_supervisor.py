@@ -128,11 +128,11 @@ class general_supervisor(gr.basic_block):
             elif cmd == "FTX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))	
                 sink = True		
-                self.top_block.set_TX_freq(float(newvalue))
+                self.top_block.set_tx_freq(float(newvalue))
             elif cmd == "FRX":
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))			
                 source = True
-                self.top_block.set_RX_freq(float(newvalue))
+                self.top_block.set_rx_freq(float(newvalue))
 
 
             # elif cmd in ["CR", "SF"]:
