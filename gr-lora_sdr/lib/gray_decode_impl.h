@@ -10,6 +10,11 @@ namespace gr {
     {
      private:
       uint8_t m_sf;
+      
+      std::vector<tag_t> tags;
+      std::vector<tag_t>::iterator it;
+      std::string key;
+      int value;
 
      public:
       gray_decode_impl(uint8_t sf);

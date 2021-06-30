@@ -45,7 +45,7 @@ namespace gr {
           end_N = abs_N + noutput_items;
           tags.clear();
           get_tags_in_range(tags, 0, abs_N, end_N);
-        }
+          }
 
         for(int i=0; i<noutput_items;i++){
             out[i]= (in[i] ^ (in[i] >> 1u));

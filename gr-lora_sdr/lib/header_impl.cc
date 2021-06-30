@@ -70,10 +70,13 @@ namespace gr {
           for (it = tags.begin(); it != tags.end(); ++it) {
             key = pmt::symbol_to_string((*it).key);
             value = stoi(pmt::symbol_to_string((*it).value));
-            if (key == "CR"){
+            if (key == "CR-TX"){
               m_cr = value;
               // std::cout << "Header imp - New CR : " << value << "\n";
             } 
+            if (key == "CRC-TX"){
+              m_has_crc = value;
+            }
           }
         } // END EXTRACT TAGS FOR PARAMETERS DYNAMISM
 

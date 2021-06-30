@@ -69,6 +69,7 @@ namespace gr {
       uint8_t*out = (uint8_t *) output_items[0];
       memcpy(out,in,ninput_items[0]*sizeof(uint8_t));
 
+/*
       uint64_t abs_N, end_N;
       set_tag_propagation_policy(TPP_DONT);
       
@@ -79,6 +80,24 @@ namespace gr {
         get_tags_in_range(tags, 0, abs_N, end_N);
         // NO PARAMETERS TO CHANGE IN CRC
       }
+*/
+      // START EXTRACT TAGS FOR PARAMETERS DYNAMISM
+      uint64_t abs_N, end_N;
+      set_tag_propagation_policy(TPP_DONT);
+      
+      for (size_t i = 0; i < input_items.size(); i++) {
+        abs_N = nitems_read(i);
+        end_N = abs_N + noutput_items;
+        tags.clear();
+        get_tags_in_range(tags, 0, abs_N, end_N);
+        for (it = tags.begin(); it != tags.end(); ++it) {
+          key = pmt::symbol_to_string((*it).key);
+          value = stoi(pmt::symbol_to_string((*it).value));
+          if (key == "CRC-TX"){
+            m_has_crc = value;
+          }
+        }
+      } // END EXTRACT TAGS FOR PARAMETERS DYNAMISM
 
 
       if(m_has_crc){//append the CRC to the payload
