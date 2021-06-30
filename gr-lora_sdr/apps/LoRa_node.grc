@@ -209,6 +209,33 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(560, 60)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>cr_rx</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>4</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(560, 4)</value>
     </param>
     <param>
@@ -217,11 +244,38 @@
     </param>
     <param>
       <key>id</key>
-      <value>cr</value>
+      <value>cr_tx</value>
     </param>
     <param>
       <key>value</key>
       <value>4</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(624, 60)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>has_crc_rx</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>True</value>
     </param>
   </block>
   <block>
@@ -244,7 +298,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>has_crc</value>
+      <value>has_crc_tx</value>
     </param>
     <param>
       <key>value</key>
@@ -317,7 +371,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(704, 4)</value>
+      <value>(728, 4)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -544,11 +598,11 @@
     </param>
     <param>
       <key>cr</key>
-      <value>cr</value>
+      <value>cr_rx</value>
     </param>
     <param>
       <key>has_crc</key>
-      <value>has_crc</value>
+      <value>has_crc_rx</value>
     </param>
     <param>
       <key>impl_head</key>
@@ -564,7 +618,7 @@
     </param>
     <param>
       <key>sf</key>
-      <value>sf</value>
+      <value>sf_rx</value>
     </param>
     <param>
       <key>udp_rx_port</key>
@@ -615,11 +669,11 @@
     </param>
     <param>
       <key>cr</key>
-      <value>cr</value>
+      <value>cr_tx</value>
     </param>
     <param>
       <key>has_crc</key>
-      <value>has_crc</value>
+      <value>has_crc_tx</value>
     </param>
     <param>
       <key>impl_head</key>
@@ -635,7 +689,7 @@
     </param>
     <param>
       <key>sf</key>
-      <value>sf</value>
+      <value>sf_tx</value>
     </param>
   </block>
   <block>
@@ -889,6 +943,53 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(376, 76)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>sf_rx</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>intx</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>7</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(376, 4)</value>
     </param>
     <param>
@@ -897,7 +998,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>sf</value>
+      <value>sf_tx</value>
     </param>
     <param>
       <key>label</key>
@@ -3332,6 +3433,33 @@
     </param>
   </block>
   <block>
+    <key>virtual_sink</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(792, 532)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_sink_4</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>GS_rx_cmd</value>
+    </param>
+  </block>
+  <block>
     <key>virtual_source</key>
     <param>
       <key>comment</key>
@@ -3437,6 +3565,33 @@
     <param>
       <key>stream_id</key>
       <value>GS_source_cmd</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(920, 308)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_3</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>GS_rx_cmd</value>
     </param>
   </block>
   <connection>
