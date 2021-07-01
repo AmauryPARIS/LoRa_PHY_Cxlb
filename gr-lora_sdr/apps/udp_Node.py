@@ -13,17 +13,20 @@ PORT_NO_RX = int(PORT_NO_RX)
 
 IP_ADDRESS = "127.0.0.1"
 
-dyn_parameters = {  "CR-TX" : "TX Coding Rate", 
-                    "CR-RX" : "RX Coding Rate", 
-                    "SF-TX" : "Spreading Factor",
-                    "SF-RX" : "Spreading Factor",
+dyn_parameters = {  
                     "G-TX": "Gain for TX chain", 
                     "G-RX": "Gain for RX chain",
                     "F-TX": "USRP frequency for TX chain",
                     "F-RX": "USRP frequency for RX chain",
-                    "MSG": "Data to transmit",
+                    "CR-TX" : "TX Coding Rate", 
+                    "CR-RX" : "RX Coding Rate [WORK IN PROGRESS]", 
+                    "SF-TX" : "Spreading Factor",
+                    "SF-RX" : "Spreading Factor [WORK IN PROGRESS]",
                     "BW-TX": "Bandwidth for TX chain [WORK IN PROGRESS]",
-                    "BW-RX": "Bandwidth for RX chain [WORK IN PROGRESS]"
+                    "BW-RX": "Bandwidth for RX chain [WORK IN PROGRESS]",
+                    "CRC-TX": "Presence of a CRC for TX chain [WORK IN PROGRESS]"
+                    "CRC-RX": "Presence of a CRC for RX chain [WORK IN PROGRESS]"
+                    "MSG": "Data to transmit",
                 } 
 
 out_cmd = {

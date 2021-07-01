@@ -3363,7 +3363,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(792, 452)</value>
+      <value>(800, 484)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3390,7 +3390,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(800, 484)</value>
+      <value>(808, 516)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3440,11 +3440,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(792, 532)</value>
+      <value>(792, 452)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3579,7 +3579,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(920, 308)</value>
+      <value>(912, 292)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3616,6 +3616,12 @@
     <source_block_id>lora_sdr_general_supervisor_0</source_block_id>
     <sink_block_id>virtual_sink_0</sink_block_id>
     <source_key>GS_msg</source_key>
+    <sink_key>in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>lora_sdr_general_supervisor_0</source_block_id>
+    <sink_block_id>virtual_sink_4</sink_block_id>
+    <source_key>GS_rx_cmd</source_key>
     <sink_key>in</sink_key>
   </connection>
   <connection>
