@@ -45,7 +45,7 @@ class lora_dyn_node(gr.top_block):
         ##################################################
         # Variables
         ##################################################
-        self.bw_tx = bw_tx = 500000
+        self.bw_tx = bw_tx = 250000
         self.bw_rx = bw_rx = 250000
         self.variable_function_probe_0 = variable_function_probe_0 = 0
         self.samp_rate_tx = samp_rate_tx = bw_tx

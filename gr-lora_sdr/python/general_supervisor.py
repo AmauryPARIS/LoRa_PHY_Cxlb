@@ -237,7 +237,7 @@ class general_supervisor(gr.basic_block):
                     print("BW-RX = " + str(self.top_block.get_bw_rx()) + "\n")
 
                     print("CRC-TX = " + str(self.top_block.get_has_crc_tx()))
-                    print("CRC-RX = " + str(self.top_block.get_has_crc_rx() + "\n"))
+                    print("CRC-RX = " + str(self.top_block.get_has_crc_rx()) + "\n")
                     # TODO HERE
             else:
                 print("TX UDP General - Unknown cmd")

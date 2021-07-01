@@ -24,9 +24,9 @@ dyn_parameters = {
                     "SF-RX" : "Spreading Factor [WORK IN PROGRESS]",
                     "BW-TX": "Bandwidth for TX chain [WORK IN PROGRESS]",
                     "BW-RX": "Bandwidth for RX chain [WORK IN PROGRESS]",
-                    "CRC-TX": "Presence of a CRC for TX chain [WORK IN PROGRESS]"
-                    "CRC-RX": "Presence of a CRC for RX chain [WORK IN PROGRESS]"
-                    "MSG": "Data to transmit",
+                    "CRC-TX": "Presence of a CRC for TX chain [WORK IN PROGRESS]",
+                    "CRC-RX": "Presence of a CRC for RX chain [WORK IN PROGRESS]",
+                    "MSG": "Data to transmit"
                 } 
 
 out_cmd = {
