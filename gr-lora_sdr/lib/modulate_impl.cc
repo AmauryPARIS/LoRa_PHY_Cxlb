@@ -62,8 +62,8 @@ namespace gr {
                        gr_vector_void_star &output_items)
     {
 
-        std::cout << "std::cout - DEBUG: Start modulate general_work";
-        printf("printf - DEBUG: Start modulate general_work");
+        std::cout << "DEBUG: Start modulate general_work\n";
+        // printf("printf - DEBUG: Start modulate general_work");
 
         const uint32_t *in = (const uint32_t *) input_items[0];
         gr_complex *out = (gr_complex *) output_items[0];
