@@ -90,7 +90,8 @@ namespace gr {
             if (key == "BW-TX"){
               m_bw = value;
               m_samp_rate = value;
-              printf("DEBUG: Modulate sample rate = %lf", (float)(m_samp_rate)); 
+              std::cout << "DEBUG: Modulate sample rate = " << (m_samp_rate) << "\n";
+              // printf("DEBUG: Modulate sample rate = %lf", (float)(m_samp_rate)); 
               m_number_of_bins    =(uint32_t)(1u << m_sf);
               m_symbols_per_second = (double)m_bw/m_number_of_bins;
               m_samples_per_symbol = (uint32_t)(m_samp_rate / m_symbols_per_second);
