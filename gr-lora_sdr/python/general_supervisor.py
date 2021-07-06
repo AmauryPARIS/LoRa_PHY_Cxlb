@@ -137,19 +137,19 @@ class general_supervisor(gr.basic_block):
             if cmd == "G-TX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("gain"), pmt.from_float(float(newvalue)))
                 sink = True
-                self.top_block.set_TX_gain(float(newvalue))
+                # self.top_block.set_TX_gain(float(newvalue))
             elif cmd == "G-RX":
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("gain"), pmt.from_float(float(newvalue)))
                 source = True
-                self.top_block.set_RX_gain(float(newvalue))
+                # self.top_block.set_RX_gain(float(newvalue))
             elif cmd == "F-TX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))	
                 sink = True		
-                self.top_block.set_tx_freq(float(newvalue))
+                # self.top_block.set_tx_freq(float(newvalue))
             elif cmd == "F-RX":
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))			
                 source = True
-                self.top_block.set_rx_freq(float(newvalue))
+                # self.top_block.set_rx_freq(float(newvalue))
 
         ## TX cmd
 
@@ -157,17 +157,17 @@ class general_supervisor(gr.basic_block):
             #     tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
             elif cmd == "SF-TX":
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
-                self.top_block.set_sf_tx(int(newvalue))
+                # self.top_block.set_sf_tx(int(newvalue))
             elif cmd == "CR-TX":
                 if not int(newvalue) in range(1, 5):
                     # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Can only set the coding rate to a integer value between 1 (corresponding to CR = 4/5) and 4 (corresponding to CR = 4/8)")
                     return 1
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
-                self.top_block.set_cr_tx(int(newvalue))
+                # self.top_block.set_cr_tx(int(newvalue))
 
             elif cmd == "BW-TX":
-                self.top_block.set_bw_tx(float(newvalue))
+                # self.top_block.set_bw_tx(float(newvalue))
 
                 # Sample rate is already set by set_bw
                 # self.top_block.set_samp_rate(int(newvalue)) 
@@ -178,7 +178,7 @@ class general_supervisor(gr.basic_block):
                 # Debug print - TODO : erase
                 print("DEBUG: BW modification added to the tx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")
             elif cmd == "CRC-TX":
-                self.top_block.set_has_crc_tx(bool(newvalue))
+                # self.top_block.set_has_crc_tx(bool(newvalue))
 
                 tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
 
@@ -187,7 +187,7 @@ class general_supervisor(gr.basic_block):
 
         ## RX cmd
             elif cmd == "BW-RX":
-                self.top_block.set_bw_rx(float(newvalue))
+                # self.top_block.set_bw_rx(float(newvalue))
 
                 # Sample rate variable (not the tag) is already set by set_bw
                 # self.top_block.set_samp_rate(int(newvalue))
@@ -200,17 +200,21 @@ class general_supervisor(gr.basic_block):
 
             elif cmd == "SF-RX":
                 rx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
-                self.top_block.set_sf_rx(int(newvalue))
+                # self.top_block.set_sf_rx(int(newvalue))
+
+            # Samp rate à modif aussi dans le bloc décimation
+            # Chaine de réception qui prend en paramètre SF, samp_rate et BW
+
             elif cmd == "CR-RX":
                 if not int(newvalue) in range(1, 5):
                     # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Can only set the coding rate to a integer value between 1 (corresponding to CR = 4/5) and 4 (corresponding to CR = 4/8)")
                     return 1
                 rx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
-                self.top_block.set_cr_rx(int(newvalue))
+                # self.top_block.set_cr_rx(int(newvalue))
 
             elif cmd == "CRC-RX":
-                self.top_block.set_has_crc_rx(bool(newvalue))
+                # self.top_block.set_has_crc_rx(bool(newvalue))
 
                 rx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
 
@@ -227,17 +231,17 @@ class general_supervisor(gr.basic_block):
                     print("G-TX = " + str(self.top_block.uhd_usrp_sink_0.get_gain()))
                     print("G-RX = " + str(self.top_block.uhd_usrp_source_0.get_gain()) + "\n")
                     
-                    print("SF-TX = " + str(self.top_block.get_sf_tx()))
-                    print("SF-RX = " + str(self.top_block.get_sf_rx()) + "\n")
+                    # print("SF-TX = " + str(self.top_block.get_sf_tx()))
+                    # print("SF-RX = " + str(self.top_block.get_sf_rx()) + "\n")
 
-                    print("CR-TX = " + str(self.top_block.get_cr_tx()) )
-                    print("CR-RX = " + str(self.top_block.get_cr_rx()) + "\n")
+                    # print("CR-TX = " + str(self.top_block.get_cr_tx()) )
+                    # print("CR-RX = " + str(self.top_block.get_cr_rx()) + "\n")
 
-                    print("BW-TX = " + str(self.top_block.get_bw_tx()))
-                    print("BW-RX = " + str(self.top_block.get_bw_rx()) + "\n")
+                    # print("BW-TX = " + str(self.top_block.get_bw_tx()))
+                    # print("BW-RX = " + str(self.top_block.get_bw_rx()) + "\n")
 
-                    print("CRC-TX = " + str(self.top_block.get_has_crc_tx()))
-                    print("CRC-RX = " + str(self.top_block.get_has_crc_rx()) + "\n")
+                    # print("CRC-TX = " + str(self.top_block.get_has_crc_tx()))
+                    # print("CRC-RX = " + str(self.top_block.get_has_crc_rx()) + "\n")
                     # TODO HERE
             else:
                 print("TX UDP General - Unknown cmd")

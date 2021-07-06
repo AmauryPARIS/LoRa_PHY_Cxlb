@@ -12,7 +12,6 @@ sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnura
 
 from gnuradio import blocks
 from gnuradio import eng_notation
-from gnuradio import filter
 from gnuradio import gr
 from gnuradio import uhd
 from gnuradio.eng_option import eng_option
@@ -84,7 +83,7 @@ class lora_dyn_node(gr.top_block):
         		channels=range(1),
         	),
         )
-        self.uhd_usrp_source_0.set_samp_rate(samp_rate_rx)
+        self.uhd_usrp_source_0.set_samp_rate(1000000)
         self.uhd_usrp_source_0.set_center_freq(rx_freq, 0)
         self.uhd_usrp_source_0.set_gain(RX_gain, 0)
         self.uhd_usrp_source_0.set_antenna('RX2', 0)
@@ -103,8 +102,6 @@ class lora_dyn_node(gr.top_block):
         self.uhd_usrp_sink_0.set_gain(TX_gain, 0)
         self.uhd_usrp_sink_0.set_antenna('TX/RX', 0)
         self.uhd_usrp_sink_0.set_bandwidth(bw_tx, 0)
-        self.interp_fir_filter_xxx_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,	-0.212206590789194,	-0.180063263231421,	3.89817183251938e-17	,0.300105438719035	,0.636619772367581	,0.900316316157106,	1	,0.900316316157106,	0.636619772367581,	0.300105438719035,	3.89817183251938e-17,	-0.180063263231421,	-0.212206590789194,	-0.128616616593872))
-        self.interp_fir_filter_xxx_0.declare_sample_delay(0)
         self.hier_lora_tx_0 = hier_lora_tx(
             bw=bw_tx,
             cr=cr_tx,
@@ -139,8 +136,7 @@ class lora_dyn_node(gr.top_block):
         self.msg_connect((self.lora_sdr_general_supervisor_0, 'GS_source_cmd'), (self.uhd_usrp_source_0, 'command'))
         self.connect((self.blocks_udp_source_0, 0), (self.lora_sdr_general_supervisor_0, 0))
         self.connect((self.hier_lora_tx_0, 0), (self.uhd_usrp_sink_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0, 0), (self.hier_lora_rx_0, 0))
-        self.connect((self.uhd_usrp_source_0, 0), (self.interp_fir_filter_xxx_0, 0))
+        self.connect((self.uhd_usrp_source_0, 0), (self.hier_lora_rx_0, 0))
 
     def get_hist_avg(self):
         return self.hist_avg
@@ -234,7 +230,6 @@ class lora_dyn_node(gr.top_block):
 
     def set_samp_rate_rx(self, samp_rate_rx):
         self.samp_rate_rx = samp_rate_rx
-        self.uhd_usrp_source_0.set_samp_rate(self.samp_rate_rx)
         self.hier_lora_rx_0.set_samp_rate(self.samp_rate_rx)
 
     def get_pay_len(self):
