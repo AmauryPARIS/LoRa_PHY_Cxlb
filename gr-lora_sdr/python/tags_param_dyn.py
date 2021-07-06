@@ -54,6 +54,7 @@ class tags_param_dyn(gr.sync_block):
             parameter = pmt.intern(cmd[0:underscoreposition])
             value = pmt.intern(cmd[underscoreposition+1:len(cmd)])
             self.add_item_tag(0, offset, parameter, value)
+            print("DEBUG Tag: {} - Value: {}".format(parameter, value))
 
         self.frame_count += 1
         self.tx_cmd = []

@@ -61,6 +61,10 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
+
+        std::cout << "DEBUG: Start modulate general_work\n";
+        // printf("printf - DEBUG: Start modulate general_work");
+
         const uint32_t *in = (const uint32_t *) input_items[0];
         gr_complex *out = (gr_complex *) output_items[0];
 
@@ -75,7 +79,7 @@ namespace gr {
           for (it = tags.begin(); it != tags.end(); ++it) {
             key = pmt::symbol_to_string((*it).key);
             value = stoi(pmt::symbol_to_string((*it).value));
-            if (key == "SF"){
+            if (key == "SF-TX"){
               m_sf = value;
               m_number_of_bins    =(uint32_t)(1u << m_sf);
               m_symbols_per_second = (double)m_bw/m_number_of_bins;
@@ -86,6 +90,20 @@ namespace gr {
 
               build_ref_chirps(&m_upchirp[0], &m_downchirp[0], m_sf);
               // std::cout << "Interleaver imp - New SF : " << value << "\n";
+            }
+            if (key == "BW-TX"){
+              m_bw = value;
+              m_samp_rate = value;
+              std::cout << "DEBUG: Modulate sample rate = " << (m_samp_rate) << "\n";
+              // printf("DEBUG: Modulate sample rate = %lf", (float)(m_samp_rate)); 
+              m_number_of_bins    =(uint32_t)(1u << m_sf);
+              m_symbols_per_second = (double)m_bw/m_number_of_bins;
+              m_samples_per_symbol = (uint32_t)(m_samp_rate / m_symbols_per_second);
+
+              m_downchirp.resize(m_samples_per_symbol);
+              m_upchirp.resize(m_samples_per_symbol);
+
+              build_ref_chirps(&m_upchirp[0], &m_downchirp[0], m_sf);
             } 
           }
         }

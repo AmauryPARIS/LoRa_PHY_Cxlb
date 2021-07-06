@@ -19,8 +19,8 @@ cmd_dict = {    #"CR" : "4",
                 #"SF" : "8",
                 #"GTX": "60", 
                 #"GRX": "60",
-                "FTX": "900e6",
-                "FRX": "910e6"
+                "F-TX": "900e6",
+                "F-RX": "910e6"
             } 
 socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 socket_tx.connect((IP_ADDRESS, PORT_NO_TX))

@@ -71,11 +71,11 @@ namespace gr {
             key = pmt::symbol_to_string((*it).key);
             value = stoi(pmt::symbol_to_string((*it).value));
 
-            if (key == "CR"){
+            if (key == "CR-TX"){
               m_cr = value;
               // std::cout << "Interleaver imp - New CR : " << value << "\n";
             }
-            if (key == "SF"){
+            if (key == "SF-TX"){
               m_sf = value;
               // std::cout << "Interleaver imp - New SF : " << value << "\n";
             } 

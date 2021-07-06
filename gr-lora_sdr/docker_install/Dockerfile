@@ -4,7 +4,8 @@ WORKDIR /root
 
 # lora_phy_cxlb.git
 RUN git clone https://github.com/AmauryPARIS/LoRa_PHY_Cxlb.git LoRa_PHY_Cxlb.git ;
-RUN cd /root/LoRa_PHY_Cxlb.git ; git pull ; git checkout stable
+RUN cd /root/LoRa_PHY_Cxlb.git ; git pull ; git checkout master
+
 
 
 # build module

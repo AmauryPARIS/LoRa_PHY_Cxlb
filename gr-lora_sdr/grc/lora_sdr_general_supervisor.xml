@@ -18,6 +18,10 @@
     <type>message</type>
   </source>
   <source>
+    <name>GS_rx_cmd</name>
+    <type>message</type>
+  </source>
+  <source>
     <name>GS_sink_cmd</name>
     <type>message</type>
   </source>
@@ -27,6 +31,6 @@
   </source>
 
   <doc>
-    Receive commands and dispatch them to the TX chain, the USRP sink or the USRP source 
+    Receive commands and dispatch them to the TX chain, the RX chain, the USRP sink or the USRP source 
   </doc>
 </block>
