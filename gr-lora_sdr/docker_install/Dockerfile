@@ -4,7 +4,7 @@ WORKDIR /root
 
 # lora_phy_cxlb.git
 RUN git clone https://github.com/AmauryPARIS/LoRa_PHY_Cxlb.git LoRa_PHY_Cxlb.git ;
-# RUN cd /root/LoRa_PHY_Cxlb.git ; git pull ;
+## RUN cd /root/LoRa_PHY_Cxlb.git ; git pull ;
 
 # build module
 RUN chmod +x  /root/LoRa_PHY_Cxlb.git/gr-lora_sdr/docker_install/build.sh ; /root/LoRa_PHY_Cxlb.git/gr-lora_sdr/docker_install/build.sh 
