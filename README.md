@@ -21,7 +21,7 @@ This adaptation allows end-users to connect any existing upper layer to the phys
 - Verification of explicit header checksum
 - Implicit and explicit header mode (modification inside .grc file needed)
 
-This interface can be used with the [FIT/CorteXlab radiotestbed](http://www.cortexlab.fr/), in order to have a stable environment, enabling replicable experiments. A tutorial is available on [CorteXlab's Wiki](https://wiki.cortexlab.fr/doku.php?id=gnu_radio_lora_dynamic_phy_layer) and uses a [docker image](https://hub.docker.com/r/amauryparis/cxlb_lora_phy) which includes this repository.
+This interface can be used with the [FIT/CorteXlab radiotestbed](http://www.cortexlab.fr/), in order to have a stable environment, enabling replicable experiments. A tutorial is available on [CorteXlab's Wiki](https://wiki.cortexlab.fr/doku.php?id=gnu_radio_lora_dynamic_phy_layer) and uses a [docker image](https://hub.docker.com/r/amauryparis/cxlb_lora) which includes this repository.
 If you are using this docker image, all the installation steps are already executed. Thus you can go directly to the examples section.
 
 ## Requirements
