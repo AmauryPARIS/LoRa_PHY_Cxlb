@@ -166,60 +166,6 @@ for i in range(upper_param["N"]):
 
     time.sleep(period - transmit_timing - elapsed)
     
-print("{}/{} acknowledgements received".format(rx_counter,upper_param["N"]))
+print("{}/{} = {} acknowledgements received".format(rx_counter,upper_param["N"],rx_counter/upper_param["N"]))
 
-
-
-        
-        
-
-        
-    
-
-
-
-
-
-while(True):
-    cmd = str(input("Enter the parameter OR \"send\" to send all stored commands :"))
-    if cmd == "send":
-        if len(cmd_dict) != 0:
-            socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            socket_tx.connect((IP_ADDRESS, PORT_NO_TX))
-            
-            socket_tx.send(bytes(json.dumps(cmd_dict), 'UTF-8'))
-            start = time.perf_counter()
-            socket_tx.close()
-            cmd_dict.clear()
-
-            print("Command send to LORA physical layer in GNURADIO -------> Waiting for transmission\n")
-
-
-            # socket_rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            # socket_rx.bind((IP_ADDRESS, PORT_NO_RX))
-            # received = False
-            
-            # while not received:
-            #     data, addr = socket_rx.recvfrom(1024)
-            #     end = time.perf_counter()
-            #     received_msg = json.loads("".join([chr(item) for item in data]))
-            #     print ("Message transmited !")
-            #     for key in received_msg.keys():
-            #         print("     " + key + " : " + received_msg[key])
-            #     print ("Elapsed time : " + str(end - start) + " [scd]")
-            #     print("\n")
-            #     received = True
-
-
-        else:
-            print("Your command list is empty\n")
-
-    elif cmd in dyn_parameters.keys(): 
-        # Add verification of the param type (int/float/etc)
-        param_value = str(input("Enter the new value of the " + dyn_parameters[cmd] + " :"))
-        cmd_dict.update({cmd:param_value})
-        print("Command added to list : " + str(cmd_dict) + "\n")
-
-    else:
-        print("Unknown command, please try again\n")
 
