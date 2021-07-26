@@ -1,4 +1,4 @@
-import socket, json, time, argparse
+import socket, json, time, argparse, random, select
 
 # Idée :
 # Pouvoir régler au début : **SF**, CR, GTX, GRX, FTX, FRX, nom du noeud (unique) et la durée de la fenêtre (défaut = 100ms)
@@ -164,7 +164,11 @@ for i in range(upper_param["N"]):
     if received_msg["msg"] == "ACK-Packet {} from node {}".format(i, upper_param["node_id"]):
         rx_counter += 1
 
-    time.sleep(period - transmit_timing - elapsed)
+    print(f"Period = {period}s")
+    print(f"Total elapsed time = {transmit_timing + elapsed}s\n")
+    if (period - transmit_timing - elapsed > 0):
+        time.sleep(period - transmit_timing - elapsed)
+        
     
 print("{}/{} = {} acknowledgements received".format(rx_counter,upper_param["N"],rx_counter/upper_param["N"]))
 
