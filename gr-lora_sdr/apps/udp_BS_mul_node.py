@@ -1,4 +1,5 @@
 import socket, json, time
+import threading
 
 print("LORA Phy layer Python BS controler - GNU Radio\n")
 
@@ -24,22 +25,7 @@ cmd_dict = vars(args)
 PORT_NO_TX = cmd_dict.pop('PORT_NO_TX')
 PORT_NO_RX = cmd_dict.pop('PORT_NO_RX')
 
-# PORT_NO_TX = input("Enter your UDP TX port number (default = 6788) : ")
-# if PORT_NO_TX == "":
-#     PORT_NO_TX = 6788
-# PORT_NO_RX = input("Enter your UDP RX port number (default = 6790) : ")
-# if PORT_NO_RX == "":
-#     PORT_NO_RX = 6790
-
-# PORT_NO_TX = int(PORT_NO_TX)
-# PORT_NO_RX = int(PORT_NO_RX)
-
 TIMEOUT = 60.
-
-    # try:
-    #     raw_input('Press Enter to quit: ')
-    # except EOFError:
-    #     pass
 
 
 IP_ADDRESS = "127.0.0.1"
@@ -95,3 +81,48 @@ while(True):
         break
 
 print("Timeout")
+
+
+# ### Second version of the loop with a 2nd thread to send the message
+
+# class ThreadSend(threading.Thread):
+#     def __init__(self, rx_data): 
+#         threading.Thread.__init__(self)
+#         self.data = rx_data
+    
+#     def run(self): # Sends an acknoledgment
+#         received_msg = json.loads("".join([chr(item) for item in data]))
+#         print("New message : \n")
+#         for key in received_msg.keys():
+#             print("     " + key + " : " + received_msg[key])
+#         print("\n")
+
+#         # Send ack
+#         print("Sending Acknowledgement")
+#         socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#         socket_tx.connect((IP_ADDRESS, PORT_NO_TX))
+
+#         cmd_dict = { "MSG": str("ACK-" + str(received_msg["msg"])) } 
+
+#         socket_tx.send(bytes(json.dumps(cmd_dict), 'UTF-8'))
+
+#         socket_tx.close()
+#         cmd_dict.clear()
+#         print("\n")
+
+# while(True):
+
+#     # Listen for new message
+#     socket_rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#     socket_rx.bind((IP_ADDRESS, PORT_NO_RX))
+#     print("Waiting for new received message for {}s".format(TIMEOUT))
+#     ready = select.select([socket_rx],[],[],TIMEOUT)
+#     if ready[0]:
+#         data, addr = socket_rx.recvfrom(1024)
+#         thread = ThreadSend(data) # New thread to send the acknowledgement 
+#         # -> very little time spent not listening
+#         thread.start()
+#     else:
+#         break
+# 
+# print("Timeout")
