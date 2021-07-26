@@ -1,38 +1,12 @@
 import socket, json, time, argparse, random, select
 
-# Idée :
-# Pouvoir régler au début : **SF**, CR, GTX, GRX, FTX, FRX, nom du noeud (unique) et la durée de la fenêtre (défaut = 100ms)
-# -> plus la fenêtre et courte et avec des SF identiques pour tous les noeuds on devrait avoir plus d'interférences
-# Avoir un paramètre binaire (True ou False) pour le caractère aléatoire
-
-# 1 - input de tous les paramètres (à entrer obligatoirement, "" = paramètre par défaut)
-# 2 - lancement d'une boucle infinie
-#   a - check si le timer est passé en négatif
-#       i - si oui alors on remet le timer et on fait un envoi "[NODE NAME]X" où X est le numéro du message
-#   b - on écoute
-#       i - si message reçu, alors on vérifie qu'il a bien la forme "[NODE NAME]X - ACK" où X est un entier
-#           si oui, alors on comptabilise 1 message bien reçu.
-
-# 
-
 TRANSMIT_WINDOW_RATIO = 1/2
 RECEIVE_WINDOW_RATIO = 1/4
 
-# t_x = random.random() * TRANSMIT_WINDOW_RATIO * period
-# r_x = RECEIVE_WINDOW_RATIO * period
-# remaining = period - t_x - r_x
-# Node wait for t_x seconds
-# Node transmit
-# Node receive for RECEIVE_WINDOW_RATIO * period
-# Node waits for remaining seconds
-
 # Transmit/Receive cycle of the node: 
 #   transmit window -> TRANSMIT_WINDOW_RATIO * period 
-#       (transmit at the start of the window if random=False, randomly if True)
+#       (transmit at the start of the window if random=False, randomly in TX window if True)
 #   receive window -> (1-TRANSMIT_WINDOW_RATIO) * period
-
-
-# Problème :     data, addr = socket_rx.recvfrom(1024) écoute jusqu'à avoir reçu un message -> nécessité de faire 2 tâches
 
 print("LORA Phy layer Python Multiple Node controler - GNU Radio\n")
 
@@ -40,8 +14,10 @@ print("LORA Phy layer Python Multiple Node controler - GNU Radio\n")
 parser = argparse.ArgumentParser(description="LORA Phy layer Python Multiple Node controler - GNU Radio")
 # Upper layer parameters
 parser.add_argument('node_id', help="Unique node identifier")
-parser.add_argument('--period', type=float, help="Period of the transmitting/receiving cycle in seconds", default=.1)
-parser.add_argument('--random', type = bool, default=True)
+parser.add_argument('--period', type=float, \
+    help="Period of the transmitting/receiving cycle in seconds", default=.1)
+parser.add_argument('--random', type = bool, default=True, \
+    help="True = Transmit at a random timing in TX window, False = transmit at the beginning of the TX window")
 parser.add_argument('--N', type = int, default=10, help="Number of transmitted message")
 
 # Port numbers
@@ -49,10 +25,10 @@ parser.add_argument('--PORT_NO_TX', type = int, default=6788, help="UDP TX port 
 parser.add_argument('--PORT_NO_RX', type = int, default=6790, help="UDP RX port number")
 
 
-# Physical layer parameters
+# Physical layer parameters - to be tested
 # parser.add_argument('--SF', type=int, help="Spreading factor")
 # parser.add_argument('--CR', type=int, help="Coding Rate")
-# parser.add_argument('--CRC', type = bool, default=True)
+# parser.add_argument('--CRC', type = bool, default=True, "CRC presence")
 # parser.add_argument('--GTX', type = float, default=30, help="Gain for TX chain")
 # parser.add_argument('--GRX', type = float, default=20, help="Gain for RX chain")
 parser.add_argument('--FTX', type = float, default=910e6, help="USRP frequency for TX chain")
@@ -69,6 +45,7 @@ parser.add_argument('--FRX', type = float, default=900e6, help="USRP frequency f
 #                     "print" : "Print in GNURADIO current parameters"
 #                 } 
 
+# Parsing
 args = parser.parse_args()
 cmd_dict = vars(args)
 
@@ -76,7 +53,7 @@ PORT_NO_TX = cmd_dict.pop('PORT_NO_TX')
 PORT_NO_RX = cmd_dict.pop('PORT_NO_RX')
 IP_ADDRESS = "127.0.0.1"
 
-
+# Upper layer parameters
 upper_param_key = ["node_id", "period", "random", "N"]
 upper_param = {}
 for key in upper_param_key:
@@ -116,20 +93,11 @@ cmd_dict.clear()
 
 print("\n")
 
-# transmit_timing = random.random() * TRANSMIT_WINDOW_RATIO * period
-# rx_duration = RECEIVE_WINDOW_RATIO * period
-# t_left = period - transmit_timing - rx_elapsed_time
-# Node transmit
-# Node listens for rx_duration or until it receives a valid acknowledgement
-# Node waits for t_left seconds 
-
-# Transmit/Receive cycle of the node: 
-#   transmit window -> TRANSMIT_WINDOW_RATIO * period 
-#       (transmit at the start of the window if random=False, randomly if True)
-#   receive window -> (1-TRANSMIT_WINDOW_RATIO) * period
-
 rx_duration = RECEIVE_WINDOW_RATIO * period
 rx_counter = 0
+
+socket_rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+socket_rx.bind((IP_ADDRESS, PORT_NO_RX))
 
 for i in range(upper_param["N"]):
     # Node waits for transmit_timing seconds (0 if random is set to false)
@@ -143,9 +111,7 @@ for i in range(upper_param["N"]):
     socket_tx.send(bytes(json.dumps(cmd_dict), 'UTF-8'))
     socket_tx.close()
 
-    # Node listens for rx_duration
-    socket_rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    socket_rx.bind((IP_ADDRESS, PORT_NO_RX))
+    # Node listens for rx_duration or until it receives a valid acknowledgement
     
     received_msg = {"msg":""}
 
@@ -168,10 +134,12 @@ for i in range(upper_param["N"]):
     else:
         print("No ACK received on message {}".format(i))
 
-    print(f"Period = {period}s")
-    print(f"Total elapsed time = {transmit_timing + elapsed}s\n")
+    # print(f"DEBUG: Period = {period}s")
+    # print(f"DEBUG: Total elapsed time = {transmit_timing + elapsed}s\n")
     if (period - transmit_timing - elapsed > 0):
+        # Node waits for the end of the period
         time.sleep(period - transmit_timing - elapsed)
+        
         
     
 print("{}/{} = {} acknowledgements received".format(rx_counter,upper_param["N"],rx_counter/upper_param["N"]))
