@@ -16,7 +16,7 @@ import socket, json, time, argparse, random, select
 # 
 
 TRANSMIT_WINDOW_RATIO = 1/2
-RECEIVE_WINDOW_RATIO = 3/4
+RECEIVE_WINDOW_RATIO = 1/4
 
 # t_x = random.random() * TRANSMIT_WINDOW_RATIO * period
 # r_x = RECEIVE_WINDOW_RATIO * period
@@ -163,6 +163,8 @@ for i in range(upper_param["N"]):
     # If a valid acknowledgement was received, increase the rx_counter
     if received_msg["msg"] == "ACK-Packet {} from node {}".format(i, upper_param["node_id"]):
         rx_counter += 1
+    else:
+        print("No ACK received on message {}".format(i))
 
     print(f"Period = {period}s")
     print(f"Total elapsed time = {transmit_timing + elapsed}s\n")

@@ -120,9 +120,9 @@ print("Timeout")
 #     if ready[0]:
 #         data, addr = socket_rx.recvfrom(1024)
 #         thread = ThreadSend(data) # New thread to send the acknowledgement 
-#         # -> very little time spent not listening
+#         # -> No time spent on sending on main thread
 #         thread.start()
 #     else:
 #         break
-# 
+
 # print("Timeout")
