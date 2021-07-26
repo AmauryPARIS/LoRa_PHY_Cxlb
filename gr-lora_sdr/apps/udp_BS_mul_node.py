@@ -15,8 +15,8 @@ parser.add_argument('--PORT_NO_RX', type = int, default=6790, help="UDP RX port 
 # parser.add_argument('--CRC', type = bool, default=True)
 # parser.add_argument('--GTX', type = float, default=30, help="Gain for TX chain")
 # parser.add_argument('--GRX', type = float, default=20, help="Gain for RX chain")
-parser.add_argument('--FTX', type = float, default=910e6, help="USRP frequency for TX chain")
-parser.add_argument('--FRX', type = float, default=900e6, help="USRP frequency for RX chain")
+parser.add_argument('--FTX', type = float, default=900e6, help="USRP frequency for TX chain")
+parser.add_argument('--FRX', type = float, default=910e6, help="USRP frequency for RX chain")
 
 # Parsing
 args = parser.parse_args()
