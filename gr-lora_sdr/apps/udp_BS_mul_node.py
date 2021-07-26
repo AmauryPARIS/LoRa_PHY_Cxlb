@@ -46,42 +46,6 @@ socket_tx.close()
 cmd_dict.clear()
 
 
-
-# socket_rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# socket_rx.bind((IP_ADDRESS, PORT_NO_RX))
-# print("\n")
-# while(True):
-
-#     # Listen for new message
-#     print("Waiting for new received message for {}s".format(TIMEOUT))
-#     ready = select.select([socket_rx],[],[],TIMEOUT)
-#     if ready[0]:
-
-#         data, addr = socket_rx.recvfrom(1024)
-#         received_msg = json.loads("".join([chr(item) for item in data]))
-#         print("New message : \n")
-#         for key in received_msg.keys():
-#             print("     " + key + " : " + received_msg[key])
-#         print("\n")
-
-#         # Send ack
-#         print("Sending Acknowledgement")
-#         socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#         socket_tx.connect((IP_ADDRESS, PORT_NO_TX))
-
-#         cmd_dict = { "MSG": str("ACK-" + str(received_msg["msg"])) } 
-
-#         socket_tx.send(bytes(json.dumps(cmd_dict), 'UTF-8'))
-
-#         socket_tx.close()
-#         cmd_dict.clear()
-#         print("\n")
-#     else:
-#         break
-
-# print("Timeout")
-
-
 ### Second version of the loop with a 2nd thread to send the message
 
 class ThreadSend(threading.Thread):
@@ -113,9 +77,9 @@ socket_rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 socket_rx.bind((IP_ADDRESS, PORT_NO_RX))
 while(True):
 
-    # Listen for new message
+    # Listen for new messages for TIMEOUT seconds
 
-    print("Waiting for new received message for {}s".format(TIMEOUT))
+    print("Waiting for a new received message for {}s".format(TIMEOUT))
     ready = select.select([socket_rx],[],[],TIMEOUT)
     if ready[0]:
         data, addr = socket_rx.recvfrom(1024)

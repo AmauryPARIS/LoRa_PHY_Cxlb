@@ -12,10 +12,11 @@ print("LORA Phy layer Python Multiple Node controler - GNU Radio\n")
 
 
 parser = argparse.ArgumentParser(description="LORA Phy layer Python Multiple Node controler - GNU Radio")
+
 # Upper layer parameters
 parser.add_argument('node_id', help="Unique node identifier")
 parser.add_argument('--period', type=float, \
-    help="Period of the transmitting/receiving cycle in seconds", default=.1)
+    help="Period of the transmitting/receiving cycle in seconds", default=2.)
 parser.add_argument('--random', type = bool, default=True, \
     help="True = Transmit at a random timing in TX window, False = transmit at the beginning of the TX window")
 parser.add_argument('--N', type = int, default=10, help="Number of transmitted message")
@@ -71,10 +72,8 @@ print("\nPhysical layer parameters:")
 for key in cmd_dict.keys():
     print("{}= {}".format(key, cmd_dict[key]))
 
-
-# cmd_dict = {}
-
 # Init PHY layer in GNU Radio
+
 # cmd_dict = {    #"CR" : "4", 
 #                 #"SF" : "8",
 #                 #"GTX": "60", 
@@ -142,6 +141,6 @@ for i in range(upper_param["N"]):
         
         
     
-print("{}/{} = {} acknowledgements received".format(rx_counter,upper_param["N"],rx_counter/upper_param["N"]))
+print("{}/{} = {}%% acknowledgements received".format(rx_counter,upper_param["N"],100*rx_counter/upper_param["N"]))
 
 
