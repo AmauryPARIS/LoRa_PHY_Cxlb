@@ -47,13 +47,12 @@ cmd_dict.clear()
 
 
 
-
+socket_rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+socket_rx.bind((IP_ADDRESS, PORT_NO_RX))
 print("\n")
 while(True):
 
     # Listen for new message
-    socket_rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    socket_rx.bind((IP_ADDRESS, PORT_NO_RX))
     print("Waiting for new received message for {}s".format(TIMEOUT))
     ready = select.select([socket_rx],[],[],TIMEOUT)
     if ready[0]:

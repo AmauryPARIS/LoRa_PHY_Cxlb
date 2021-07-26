@@ -158,6 +158,8 @@ for i in range(upper_param["N"]):
         if ready[0]:
             data, addr = socket_rx.recvfrom(1024)
             received_msg = json.loads("".join([chr(item) for item in data]))
+            print("DEBUG: Received message: {}".format(received_msg["msg"]))
+            print("DEBUG: Expected message: ACK-Packet {} from node {}".format(i, upper_param["node_id"]))
         elapsed = time.perf_counter() - start
 
     # If a valid acknowledgement was received, increase the rx_counter
