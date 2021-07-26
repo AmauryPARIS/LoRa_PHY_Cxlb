@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Lora Dyn Node
+# Title: Lora Dyn Node No Strobe
 # GNU Radio version: 3.7.13.5
 ##################################################
 
@@ -20,17 +20,15 @@ from gnuradio.filter import firdes
 from hier_lora_rx import hier_lora_rx  # grc-generated hier_block
 from hier_lora_tx import hier_lora_tx  # grc-generated hier_block
 from optparse import OptionParser
-import epy_block_0
 import lora_sdr
-import pmt
 import threading
 import time
 
 
-class lora_dyn_node(gr.top_block):
+class lora_dyn_node_no_strobe(gr.top_block):
 
     def __init__(self, hist_avg=5, noise_elem=20, rx_freq=915e6, sf=7, tx_freq=915e6, udp_rx_port=6790, udp_tx_port=6788):
-        gr.top_block.__init__(self, "Lora Dyn Node")
+        gr.top_block.__init__(self, "Lora Dyn Node No Strobe")
 
         ##################################################
         # Parameters
@@ -122,17 +120,13 @@ class lora_dyn_node(gr.top_block):
             sf=sf,
             udp_rx_port=udp_rx_port,
         )
-        self.epy_block_0 = epy_block_0.blk()
         self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_char*1, '127.0.0.1', udp_tx_port, 1472, True)
-        self.blocks_message_strobe_0 = blocks.message_strobe(pmt.intern("TEST"), 1000)
 
 
 
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.blocks_message_strobe_0, 'strobe'), (self.epy_block_0, 'MSG'))
-        self.msg_connect((self.epy_block_0, 'MSG_out'), (self.hier_lora_tx_0, 'MSG'))
         self.msg_connect((self.lora_sdr_general_supervisor_0, 'GS_msg'), (self.hier_lora_tx_0, 'MSG'))
         self.msg_connect((self.lora_sdr_general_supervisor_0, 'GS_tx_cmd'), (self.hier_lora_tx_0, 'TX_cmd'))
         self.msg_connect((self.lora_sdr_general_supervisor_0, 'GS_sink_cmd'), (self.uhd_usrp_sink_0, 'command'))
@@ -292,7 +286,7 @@ def argument_parser():
     return parser
 
 
-def main(top_block_cls=lora_dyn_node, options=None):
+def main(top_block_cls=lora_dyn_node_no_strobe, options=None):
     if options is None:
         options, _ = argument_parser().parse_args()
 
