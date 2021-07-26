@@ -27,11 +27,11 @@ parser.add_argument('--PORT_NO_RX', type = int, default=6790, help="UDP RX port 
 
 
 # Physical layer parameters - to be tested
-# parser.add_argument('--SF', type=int, help="Spreading factor")
-# parser.add_argument('--CR', type=int, help="Coding Rate")
-# parser.add_argument('--CRC', type = bool, default=True, "CRC presence")
-# parser.add_argument('--GTX', type = float, default=30, help="Gain for TX chain")
-# parser.add_argument('--GRX', type = float, default=20, help="Gain for RX chain")
+parser.add_argument('--SF', type=int, help="Spreading factor", default=7)
+parser.add_argument('--CR', type=int, help="Coding Rate", default=4)
+# parser.add_argument('--CRC', type = bool, default=True, help="CRC presence")
+parser.add_argument('--GTX', type = float, default=30, help="Gain for TX chain")
+parser.add_argument('--GRX', type = float, default=20, help="Gain for RX chain")
 parser.add_argument('--FTX', type = float, default=910e6, help="USRP frequency for TX chain")
 parser.add_argument('--FRX', type = float, default=900e6, help="USRP frequency for RX chain")
 
@@ -123,8 +123,8 @@ for i in range(upper_param["N"]):
         if ready[0]:
             data, addr = socket_rx.recvfrom(1024)
             received_msg = json.loads("".join([chr(item) for item in data]))
-            print("DEBUG: Received message: {}".format(received_msg["msg"]))
-            print("DEBUG: Expected message: ACK-Packet {} from node {}".format(i, upper_param["node_id"]))
+            # print("DEBUG: Received message: {}".format(received_msg["msg"]))
+            # print("DEBUG: Expected message: ACK-Packet {} from node {}\n".format(i, upper_param["node_id"]))
         elapsed = time.perf_counter() - start
 
     # If a valid acknowledgement was received, increase the rx_counter
