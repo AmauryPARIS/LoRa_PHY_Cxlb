@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>lora_dyn_node</value>
+      <value>lora_dyn_node_no_strobe</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -349,53 +349,6 @@
     </param>
   </block>
   <block>
-    <key>blocks_message_strobe</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(32, 364)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_message_strobe_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>msg</key>
-      <value>pmt.intern("TEST")</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>period</key>
-      <value>1000</value>
-    </param>
-  </block>
-  <block>
     <key>blocks_udp_source</key>
     <param>
       <key>alias</key>
@@ -456,81 +409,6 @@
     <param>
       <key>vlen</key>
       <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>epy_block</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_io_cache</key>
-      <value>('Embedded Python Block', 'blk', [], [('MSG', 'message', 1)], [('MSG_out', 'message', 1)], 'Embedded Python Block example - a simple multiply const', [])</value>
-    </param>
-    <param>
-      <key>_source_code</key>
-      <value>"""
-Embedded Python Blocks:
-
-Each time this file is saved, GRC will instantiate the first class it finds
-to get ports and parameters of your block. The arguments to __init__  will
-be the parameters. All of them are required to have default values!
-"""
-
-import numpy as np
-from gnuradio import gr
-import pmt
-
-
-class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
-    """Embedded Python Block example - a simple multiply const"""
-
-    def __init__(self):  # only default arguments here
-        """arguments to this function show up as parameters in GRC"""
-        gr.sync_block.__init__(
-            self,
-            name='Embedded Python Block',   # will show up in GRC
-            in_sig=[],
-            out_sig=[]
-        )
-        self.count = 0
-        self.message_port_register_in(pmt.intern('MSG'))
-        self.set_msg_handler(pmt.intern('MSG'), self.handle_msg)
-        self.message_port_register_out(pmt.intern('MSG_out'))
-    
-    def handle_msg(self, msg):
-        msg_out = str(pmt.to_python(msg) + "_" + str(self.count))
-        self.message_port_pub(pmt.intern('MSG_out'), pmt.intern(msg_out))
-        print("MSG OUT - " + str(self.count) + "\n")
-        self.count += 1
-
-    def work(self, input_items, output_items):
-        """example: multiply with constant"""
-        output_items[0][:] = input_items[0]
-        return len(output_items[0])
-
-</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(200, 376)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>epy_block_0</value>
     </param>
   </block>
   <block>
@@ -3481,22 +3359,10 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
     </param>
   </block>
   <connection>
-    <source_block_id>blocks_message_strobe_0</source_block_id>
-    <sink_block_id>epy_block_0</sink_block_id>
-    <source_key>strobe</source_key>
-    <sink_key>MSG</sink_key>
-  </connection>
-  <connection>
     <source_block_id>blocks_udp_source_0</source_block_id>
     <sink_block_id>lora_sdr_general_supervisor_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>epy_block_0</source_block_id>
-    <sink_block_id>hier_lora_tx_0</sink_block_id>
-    <source_key>MSG_out</source_key>
-    <sink_key>MSG</sink_key>
   </connection>
   <connection>
     <source_block_id>hier_lora_tx_0</source_block_id>

@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>lora_dyn_node_no_strobe</value>
+      <value>lora_dyn_node_msg_strobe</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -364,7 +364,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -518,7 +518,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
