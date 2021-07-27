@@ -33,7 +33,9 @@ GR_PYTHON_INSTALL(
     __init__.py
     tags_param_dyn.py
     perf_collector.py
-    general_supervisor.py DESTINATION ${GR_PYTHON_DIR}/lora_sdr
+    general_supervisor.py
+    rx_tag_param_dyn.py
+    decim_factor_modifier.py DESTINATION ${GR_PYTHON_DIR}/lora_sdr
 )
 
 ########################################################################
@@ -47,3 +49,5 @@ GR_ADD_TEST(qa_point_to_point ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/q
 GR_ADD_TEST(qa_tags_param_dyn ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_tags_param_dyn.py)
 GR_ADD_TEST(qa_perf_collector ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_perf_collector.py)
 GR_ADD_TEST(qa_general_supervisor ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_general_supervisor.py)
+GR_ADD_TEST(qa_rx_tag_param_dyn ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_rx_tag_param_dyn.py)
+GR_ADD_TEST(qa_decim_factor_modifier ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_decim_factor_modifier.py)

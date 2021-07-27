@@ -34,4 +34,6 @@ except ImportError:
 from tags_param_dyn import tags_param_dyn
 from perf_collector import perf_collector
 from general_supervisor import general_supervisor
+from rx_tag_param_dyn import rx_tag_param_dyn
+from decim_factor_modifier import decim_factor_modifier
 #

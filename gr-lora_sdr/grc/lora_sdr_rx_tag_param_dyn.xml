@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<block>
+  <name>rx_tag_param_dyn</name>
+  <key>lora_sdr_rx_tag_param_dyn</key>
+  <category>[LoRa_RX]</category>
+  <import>import lora_sdr</import>
+  <make>lora_sdr.rx_tag_param_dyn()</make>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+  <sink>
+    <name>RX_cmd</name>
+    <type>message</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+
+  <doc>
+    Add tags to the un-modified byte stream with parameters key and new value, 
+    Parameters can then be modified by each block within the RX chain at the beggining of the frame 
+  </doc>
+
+</block>
