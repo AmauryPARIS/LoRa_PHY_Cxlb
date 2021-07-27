@@ -27,21 +27,22 @@ parser.add_argument('--PORT_NO_RX', type = int, default=6790, help="UDP RX port 
 
 
 # Physical layer parameters - to be tested
-parser.add_argument('--SF', type=int, help="Spreading factor", default=7)
-parser.add_argument('--CR', type=int, help="Coding Rate", default=4)
-# parser.add_argument('--CRC', type = bool, default=True, help="CRC presence")
-parser.add_argument('--GTX', type = float, default=30, help="Gain for TX chain")
-parser.add_argument('--GRX', type = float, default=20, help="Gain for RX chain")
-parser.add_argument('--FTX', type = float, default=910e6, help="USRP frequency for TX chain")
-parser.add_argument('--FRX', type = float, default=900e6, help="USRP frequency for RX chain")
+parser.add_argument('--SF-TX', type=int, help="Spreading factor", default=7)
+parser.add_argument('--CR-TX', type=int, help="Coding Rate", default=4)
+# parser.add_argument('--CRC-TX', type = bool, default=True, help="CRC presence")
+parser.add_argument('--G-TX', type = float, default=30, help="Gain for TX chain")
+parser.add_argument('--G-RX', type = float, default=20, help="Gain for RX chain")
+parser.add_argument('--F-TX', type = float, default=910e6, help="USRP frequency for TX chain")
+parser.add_argument('--F-RX', type = float, default=900e6, help="USRP frequency for RX chain")
+# parser.add_argument('--BW-TX', type = float, default=910e6, help="Bandwidth for TX chain")
+# parser.add_argument('--BW-RX', type = float, default=900e6, help="Bandwidth for RX chain")
 
-
-# dyn_parameters = {  "CR" : "Coding Rate", 
-#                     "SF" : "Spreading Factor",
-#                     "GTX": "Gain for TX chain", 
-#                     "GRX": "Gain for RX chain",
-#                     "FTX": "USRP frequency for TX chain",
-#                     "FRX": "USRP frequency for RX chain",
+# dyn_parameters = {  "CR-TX" : "Coding Rate", 
+#                     "SF-TX" : "Spreading Factor",
+#                     "G-TX": "Gain for TX chain", 
+#                     "G-RX": "Gain for RX chain",
+#                     "F-TX": "USRP frequency for TX chain",
+#                     "F-RX": "USRP frequency for RX chain",
 #                     "MSG": "Data to transmit",
 #                     "print" : "Print in GNURADIO current parameters"
 #                 } 
@@ -74,7 +75,7 @@ for key in cmd_dict.keys():
 
 # Init PHY layer in GNU Radio
 
-# cmd_dict = {    #"CR" : "4", 
+# cmd_dict = {    #"CR-TX" : "4", 
 #                 #"SF" : "8",
 #                 #"GTX": "60", 
 #                 #"GRX": "60",
@@ -141,6 +142,6 @@ for i in range(upper_param["N"]):
         
         
     
-print("{}/{} = {}%% acknowledgements received".format(rx_counter,upper_param["N"],100*rx_counter/upper_param["N"]))
+print("{}/{} = {}% acknowledgements received".format(rx_counter,upper_param["N"],100*rx_counter/upper_param["N"]))
 
 

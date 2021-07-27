@@ -13,12 +13,13 @@ PORT_NO_RX = int(PORT_NO_RX)
 
 IP_ADDRESS = "127.0.0.1"
 
-dyn_parameters = {  "CR" : "Coding Rate", 
-                    "SF" : "Spreading Factor",
-                    "GTX": "Gain for TX chain", 
-                    "GRX": "Gain for RX chain",
-                    "FTX": "USRP frequency for TX chain",
-                    "FRX": "USRP frequency for RX chain",
+dyn_parameters = {  "CR-TX" : "Coding Rate", 
+                    "SF-TX" : "Spreading Factor",
+                    "CRC-TX" : "CRC Presence"
+                    "G-TX": "Gain for TX chain", 
+                    "G-RX": "Gain for RX chain",
+                    "F-TX": "USRP frequency for TX chain",
+                    "F-RX": "USRP frequency for RX chain",
                     "MSG": "Data to transmit"
                 } 
 
@@ -30,12 +31,12 @@ cmd_dict = {}
 out_dict = {}
 
 # Init PHY layer in GNU Radio
-cmd_dict = {    #"CR" : "4", 
-                #"SF" : "8",
-                #"GTX": "60", 
-                #"GRX": "60",
-                "FTX": "910e6",
-                "FRX": "900e6"
+cmd_dict = {    #"CR-TX" : "4", 
+                #"SF-TX" : "8",
+                #"G-TX": "60", 
+                #"G-RX": "60",
+                "F-TX": "910e6",
+                "F-RX": "900e6"
             } 
 socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 socket_tx.connect((IP_ADDRESS, PORT_NO_TX))
