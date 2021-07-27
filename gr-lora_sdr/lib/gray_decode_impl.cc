@@ -39,6 +39,25 @@ namespace gr {
     {
       const uint32_t *in = (const uint32_t *) input_items[0];
       uint32_t *out = (uint32_t *) output_items[0];
+
+      uint64_t abs_N, end_N;
+      set_tag_propagation_policy(TPP_DONT);
+
+      for (size_t i = 0; i < input_items.size(); i++) {
+        abs_N = nitems_read(i);
+        end_N = abs_N + noutput_items;
+        tags.clear();
+        get_tags_in_range(tags, 0, abs_N, end_N);
+        for (it = tags.begin(); it != tags.end(); ++it) {
+          key = pmt::symbol_to_string((*it).key);
+          value = stoi(pmt::symbol_to_string((*it).value));
+          if (key == "SF"){
+            m_sf = value;
+            // std::cout << "Interleaver imp - New SF : " << value << "\n";
+          } 
+        }
+      }
+
       for(int i=0;i<noutput_items;i++){
         #ifdef GRLORA_DEBUG
         std::cout<<std::hex<<"0x"<<in[i]<<" -->  ";
@@ -52,6 +71,15 @@ namespace gr {
          #ifdef GRLORA_DEBUG
          std::cout<<"0x"<<out[i]<<std::dec<<std::endl;
          #endif
+      }
+
+      // PROPAGATE TAGS WITH NEW OFFSET
+      for (it = tags.begin(); it != tags.end(); ++it) {
+        tag_t tag;
+        tag.offset = nitems_written(0);
+        tag.key = it->key;
+        tag.value = it->value;
+        add_item_tag(0, tag); 
       }
 
       return noutput_items;

@@ -9,7 +9,13 @@ namespace gr {
     class gray_decode_impl : public gray_decode
     {
      private:
+     
       uint8_t m_sf;
+      
+      std::vector<tag_t> tags;
+      std::vector<tag_t>::iterator it;
+      std::string key;
+      int value;
 
      public:
       gray_decode_impl(uint8_t sf);
