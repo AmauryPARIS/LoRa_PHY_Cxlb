@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ##################################################
 # GNU Radio Python Flow Graph
-# Title: Lora Dyn Node
+# Title: Lora Dyn Node Msg Strobe
 # GNU Radio version: 3.7.13.5
 ##################################################
 
@@ -27,10 +27,10 @@ import threading
 import time
 
 
-class lora_dyn_node(gr.top_block):
+class lora_dyn_node_msg_strobe(gr.top_block):
 
     def __init__(self, hist_avg=5, noise_elem=20, rx_freq=915e6, sf=7, tx_freq=915e6, udp_rx_port=6790, udp_tx_port=6788):
-        gr.top_block.__init__(self, "Lora Dyn Node")
+        gr.top_block.__init__(self, "Lora Dyn Node Msg Strobe")
 
         ##################################################
         # Parameters
@@ -292,7 +292,7 @@ def argument_parser():
     return parser
 
 
-def main(top_block_cls=lora_dyn_node, options=None):
+def main(top_block_cls=lora_dyn_node_msg_strobe, options=None):
     if options is None:
         options, _ = argument_parser().parse_args()
 
