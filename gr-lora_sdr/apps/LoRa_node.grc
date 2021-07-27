@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>lora_dyn_node_no_strobe</value>
+      <value>lora_dyn_node</value>
     </param>
     <param>
       <key>max_nouts</key>
