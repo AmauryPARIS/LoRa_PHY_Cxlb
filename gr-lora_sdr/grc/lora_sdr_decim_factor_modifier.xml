@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<block>
+  <name>decim_factor_modifier</name>
+  <key>lora_sdr_decim_factor_modifier</key>
+  <category>[LoRa_RX]</category>
+  <import>import lora_sdr</import>
+  <make>lora_sdr.decim_factor_modifier($Sf)</make>
+
+  <param>
+    <name>Sf</name>
+    <key>Sf</key>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>2**${Sf}</vlen>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>2**${Sf}</vlen>
+  </source>
+</block>

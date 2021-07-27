@@ -38,5 +38,7 @@ install(FILES
     lora_sdr_tags_param_dyn.xml
     lora_sdr_perf_collector.xml
     lora_sdr_general_supervisor.xml
-    lora_sdr_pwr_est.xml DESTINATION share/gnuradio/grc/blocks
+    lora_sdr_pwr_est.xml
+    lora_sdr_rx_tag_param_dyn.xml
+    lora_sdr_decim_factor_modifier.xml DESTINATION share/gnuradio/grc/blocks
 )
