@@ -206,25 +206,25 @@ class general_supervisor(gr.basic_block):
 
         # print
             elif cmd == "print":
-                    print("F.TX = " + str(self.top_block.uhd_usrp_sink_0.get_center_freq()))
-                    # print("tx_freq variable = " + str(self.top_block.get_tx_freq()) + "\n")
-                    print("F.RX = " + str(self.top_block.uhd_usrp_source_0.get_center_freq()) + "\n")
-                    # print("rx_freq variable = " + str(self.top_block.get_rx_freq()) + "\n")
-                    
-                    print("G.TX = " + str(self.top_block.uhd_usrp_sink_0.get_gain()))
-                    print("G.RX = " + str(self.top_block.uhd_usrp_source_0.get_gain()) + "\n")
-                    
-                    # print("SF.TX = " + str(self.top_block.get_sf_tx()))
-                    # print("SF.RX = " + str(self.top_block.get_sf_rx()) + "\n")
+                print("F.TX = " + str(self.top_block.uhd_usrp_sink_0.get_center_freq()))
+                # print("tx_freq variable = " + str(self.top_block.get_tx_freq()) + "\n")
+                print("F.RX = " + str(self.top_block.uhd_usrp_source_0.get_center_freq()) + "\n")
+                # print("rx_freq variable = " + str(self.top_block.get_rx_freq()) + "\n")
+                
+                print("G.TX = " + str(self.top_block.uhd_usrp_sink_0.get_gain()))
+                print("G.RX = " + str(self.top_block.uhd_usrp_source_0.get_gain()) + "\n")
+                
+                # print("SF.TX = " + str(self.top_block.get_sf_tx()))
+                # print("SF.RX = " + str(self.top_block.get_sf_rx()) + "\n")
 
-                    # print("CR.TX = " + str(self.top_block.get_cr_tx()) )
-                    # print("CR.RX = " + str(self.top_block.get_cr_rx()) + "\n")
+                # print("CR.TX = " + str(self.top_block.get_cr_tx()) )
+                # print("CR.RX = " + str(self.top_block.get_cr_rx()) + "\n")
 
-                    # print("BW.TX = " + str(self.top_block.get_bw_tx()))
-                    # print("BW.RX = " + str(self.top_block.get_bw_rx()) + "\n")
+                # print("BW.TX = " + str(self.top_block.get_bw_tx()))
+                # print("BW.RX = " + str(self.top_block.get_bw_rx()) + "\n")
 
-                    # print("CRC.TX = " + str(self.top_block.get_has_crc_tx()))
-                    # print("CRC.RX = " + str(self.top_block.get_has_crc_rx()) + "\n")
+                # print("CRC.TX = " + str(self.top_block.get_has_crc_tx()))
+                # print("CRC.RX = " + str(self.top_block.get_has_crc_rx()) + "\n")
             else:
                 print("TX UDP General - Unknown cmd")
 
