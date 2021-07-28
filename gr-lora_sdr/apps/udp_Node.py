@@ -13,13 +13,13 @@ PORT_NO_RX = int(PORT_NO_RX)
 
 IP_ADDRESS = "127.0.0.1"
 
-dyn_parameters = {  "CR-TX" : "Coding Rate", 
-                    "SF-TX" : "Spreading Factor",
-                    "CRC-TX" : "CRC Presence"
-                    "G-TX": "Gain for TX chain", 
-                    "G-RX": "Gain for RX chain",
-                    "F-TX": "USRP frequency for TX chain",
-                    "F-RX": "USRP frequency for RX chain",
+dyn_parameters = {  "CR.TX" : "Coding Rate", 
+                    "SF.TX" : "Spreading Factor",
+                    "CRC.TX" : "CRC Presence",
+                    "G.TX": "Gain for TX chain", 
+                    "G.RX": "Gain for RX chain",
+                    "F.TX": "USRP frequency for TX chain",
+                    "F.RX": "USRP frequency for RX chain",
                     "MSG": "Data to transmit"
                 } 
 
@@ -31,12 +31,12 @@ cmd_dict = {}
 out_dict = {}
 
 # Init PHY layer in GNU Radio
-cmd_dict = {    #"CR-TX" : "4", 
-                #"SF-TX" : "8",
-                #"G-TX": "60", 
-                #"G-RX": "60",
-                "F-TX": "910e6",
-                "F-RX": "900e6"
+cmd_dict = {    #"CR.TX" : "4", 
+                #"SF.TX" : "8",
+                #"G.TX": "60", 
+                #"G.RX": "60",
+                "F.TX": "910e6",
+                "F.RX": "900e6"
             } 
 socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 socket_tx.connect((IP_ADDRESS, PORT_NO_TX))
@@ -87,7 +87,7 @@ while(True):
 
     elif cmd in dyn_parameters.keys(): 
         # Add verification of the param type (int/float/etc)
-        param_value = str(input("Enter the new value of the " + dyn_parameters[cmd] + " :"))
+        param_value = str(input("Enter the new value of the " + dyn_parameters[cmd] + ": "))
         cmd_dict.update({cmd:param_value})
         print("Command added to list : " + str(cmd_dict) + "\n")
 

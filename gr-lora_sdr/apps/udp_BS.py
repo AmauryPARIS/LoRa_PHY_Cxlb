@@ -15,12 +15,12 @@ IP_ADDRESS = "127.0.0.1"
 
 
 # Init PHY layer in GNU Radio
-cmd_dict = {    #"CR" : "4", 
-                #"SF" : "8",
-                #"GTX": "60", 
-                #"GRX": "60",
-                "F-TX": "900e6",
-                "F-RX": "910e6"
+cmd_dict = {    #"CR.TX" : "4", 
+                #"SF.TX" : "8",
+                #"G.TX": "60", 
+                #"G.RX": "60",
+                "F.TX": "900e6",
+                "F.RX": "910e6"
             } 
 socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 socket_tx.connect((IP_ADDRESS, PORT_NO_TX))

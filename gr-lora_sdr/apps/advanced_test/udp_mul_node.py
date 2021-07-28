@@ -1,12 +1,12 @@
 import socket, json, time, argparse, random, select
 
-TRANSMIT_WINDOW_RATIO = 1/2
-RECEIVE_WINDOW_RATIO = 1/4
+TRANSMIT_WINDOW_RATIO = 2/5
+RECEIVE_WINDOW_RATIO = 2/5
 
 # Transmit/Receive cycle of the node: 
 #   transmit window -> TRANSMIT_WINDOW_RATIO * period 
 #       (transmit at the start of the window if random=False, randomly in TX window if True)
-#   receive window -> (1-TRANSMIT_WINDOW_RATIO) * period
+#   receive window -> RECEIVE_WINDOW_RATIO * period
 
 print("LORA Phy layer Python Multiple Node controler - GNU Radio\n")
 
@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(description="LORA Phy layer Python Multiple Nod
 # Upper layer parameters
 parser.add_argument('node_id', help="Unique node identifier")
 parser.add_argument('--period', type=float, \
-    help="Period of the transmitting/receiving cycle in seconds", default=2.)
+    help="Period of the transmitting/receiving cycle in seconds", default=1.5)
 parser.add_argument('--random', type = bool, default=True, \
     help="True = Transmit at a random timing in TX window, False = transmit at the beginning of the TX window")
 parser.add_argument('--N', type = int, default=10, help="Number of transmitted message")
@@ -27,22 +27,22 @@ parser.add_argument('--PORT_NO_RX', type = int, default=6790, help="UDP RX port 
 
 
 # Physical layer parameters - to be tested
-parser.add_argument('--SF-TX', type=int, help="Spreading factor", default=7)
-parser.add_argument('--CR-TX', type=int, help="Coding Rate", default=4)
-# parser.add_argument('--CRC-TX', type = bool, default=True, help="CRC presence")
-parser.add_argument('--G-TX', type = float, default=30, help="Gain for TX chain")
-parser.add_argument('--G-RX', type = float, default=20, help="Gain for RX chain")
-parser.add_argument('--F-TX', type = float, default=910e6, help="USRP frequency for TX chain")
-parser.add_argument('--F-RX', type = float, default=900e6, help="USRP frequency for RX chain")
-# parser.add_argument('--BW-TX', type = float, default=910e6, help="Bandwidth for TX chain")
-# parser.add_argument('--BW-RX', type = float, default=900e6, help="Bandwidth for RX chain")
+parser.add_argument('--SF.TX', type=int, help="Spreading factor", default=7)
+parser.add_argument('--CR.TX', type=int, help="Coding Rate", default=4)
+parser.add_argument('--CRC.TX', type = bool, default=True, help="CRC presence")
+parser.add_argument('--G.TX', type = float, default=30, help="Gain for TX chain")
+parser.add_argument('--G.RX', type = float, default=20, help="Gain for RX chain")
+parser.add_argument('--F.TX', type = float, default=910e6, help="USRP frequency for TX chain")
+parser.add_argument('--F.RX', type = float, default=900e6, help="USRP frequency for RX chain")
+# parser.add_argument('--BW.TX', type = float, default=910e6, help="Bandwidth for TX chain")
+# parser.add_argument('--BW.RX', type = float, default=900e6, help="Bandwidth for RX chain")
 
-# dyn_parameters = {  "CR-TX" : "Coding Rate", 
-#                     "SF-TX" : "Spreading Factor",
-#                     "G-TX": "Gain for TX chain", 
-#                     "G-RX": "Gain for RX chain",
-#                     "F-TX": "USRP frequency for TX chain",
-#                     "F-RX": "USRP frequency for RX chain",
+# dyn_parameters = {  "CR.TX" : "Coding Rate", 
+#                     "SF.TX" : "Spreading Factor",
+#                     "G.TX": "Gain for TX chain", 
+#                     "G.RX": "Gain for RX chain",
+#                     "F.TX": "USRP frequency for TX chain",
+#                     "F.RX": "USRP frequency for RX chain",
 #                     "MSG": "Data to transmit",
 #                     "print" : "Print in GNURADIO current parameters"
 #                 } 
@@ -75,7 +75,7 @@ for key in cmd_dict.keys():
 
 # Init PHY layer in GNU Radio
 
-# cmd_dict = {    #"CR-TX" : "4", 
+# cmd_dict = {    #"CR.TX" : "4", 
 #                 #"SF" : "8",
 #                 #"GTX": "60", 
 #                 #"GRX": "60",

@@ -65,21 +65,21 @@ class general_supervisor(gr.basic_block):
         sink = False
 
         int_param_cmd = [
-                            "CR-TX", # CR
-                            "SF-TX", # SF
-                            # "CR-RX", # 0
-                            # "SF-RX", # 0
+                            "CR.TX", # CR
+                            "SF.TX", # SF
+                            # "CR.RX", # 0
+                            # "SF.RX", # 0
                         ]
         float_param_cmd = [
-                            "G-TX", # GTX
-                            "G-RX", # GRX
-                            "F-TX", # FTX
-                            "F-RX", # FRX
-                            "BW-TX", # BWTX
-                            "BW-RX" # BWRX
+                            "G.TX", # GTX
+                            "G.RX", # GRX
+                            "F.TX", # FTX
+                            "F.RX", # FRX
+                            "BW.TX", # BWTX
+                            "BW.RX" # BWRX
                         ]
         bool_param_cmd = [
-            "CRC-TX", # 0
+            "CRC.TX", # 0
         ]
         no_param_cmd = ["print"]
         str_param_cmd = ["MSG"]
@@ -102,7 +102,7 @@ class general_supervisor(gr.basic_block):
                     print("Processing the remaining commands\n")
                     continue
             
-            if cmd in float_param_cmd:
+            elif cmd in float_param_cmd:
                 try:
                     float(newvalue)
                 except ValueError:
@@ -136,17 +136,17 @@ class general_supervisor(gr.basic_block):
             #     tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
 
 
-            elif cmd == "SF-TX":
+            if cmd == "SF.TX":
                 tx_parameters += ("SF" + "_" + str(newvalue) + "|")
                 
-            elif cmd == "CR-TX":
+            elif cmd == "CR.TX":
                 if not int(newvalue) in range(1, 5):
                     # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Can only set the coding rate to a integer value between 1 (corresponding to CR = 4/5) and 4 (corresponding to CR = 4/8)")
                     return 1
                 tx_parameters += ("CR" + "_" + str(newvalue) + "|")
 
-            elif cmd == "BW-TX":
+            elif cmd == "BW.TX":
                 # self.top_block.set_bw_tx(float(newvalue))
 
                 # Sample rate is already set by set_bw
@@ -162,7 +162,7 @@ class general_supervisor(gr.basic_block):
 
                 # Debug print - TODO : erase
                 print("DEBUG: BW modification added to the tx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")
-            elif cmd == "CRC-TX":
+            elif cmd == "CRC.TX":
                 # self.top_block.set_has_crc_tx(bool(newvalue))
 
                 tx_parameters += ("CRC" + "_" + str(newvalue) + "|")
@@ -171,7 +171,7 @@ class general_supervisor(gr.basic_block):
                 print("DEBUG: CRC modification added to the tx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")            
 
         ## RX cmd
-            elif cmd == "BW-RX":
+            elif cmd == "BW.RX":
                 # self.top_block.set_bw_rx(float(newvalue))
 
                 # Sample rate variable (not the tag) is already set by set_bw
@@ -187,44 +187,44 @@ class general_supervisor(gr.basic_block):
             # No RX SF control is possible for now
 
         # USRP cmd
-            if cmd == "G-TX":
+            elif cmd == "G.TX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("gain"), pmt.from_float(float(newvalue)))
                 sink = True
                 # self.top_block.set_TX_gain(float(newvalue))
-            elif cmd == "G-RX":
+            elif cmd == "G.RX":
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("gain"), pmt.from_float(float(newvalue)))
                 source = True
                 # self.top_block.set_RX_gain(float(newvalue))
-            elif cmd == "F-TX":
+            elif cmd == "F.TX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))	
                 sink = True		
                 # self.top_block.set_tx_freq(float(newvalue))
-            elif cmd == "F-RX":
+            elif cmd == "F.RX":
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))			
                 source = True
                 # self.top_block.set_rx_freq(float(newvalue))
 
         # print
             elif cmd == "print":
-                    print("F-TX = " + str(self.top_block.uhd_usrp_sink_0.get_center_freq()))
+                    print("F.TX = " + str(self.top_block.uhd_usrp_sink_0.get_center_freq()))
                     # print("tx_freq variable = " + str(self.top_block.get_tx_freq()) + "\n")
-                    print("F-RX = " + str(self.top_block.uhd_usrp_source_0.get_center_freq()) + "\n")
+                    print("F.RX = " + str(self.top_block.uhd_usrp_source_0.get_center_freq()) + "\n")
                     # print("rx_freq variable = " + str(self.top_block.get_rx_freq()) + "\n")
                     
-                    print("G-TX = " + str(self.top_block.uhd_usrp_sink_0.get_gain()))
-                    print("G-RX = " + str(self.top_block.uhd_usrp_source_0.get_gain()) + "\n")
+                    print("G.TX = " + str(self.top_block.uhd_usrp_sink_0.get_gain()))
+                    print("G.RX = " + str(self.top_block.uhd_usrp_source_0.get_gain()) + "\n")
                     
-                    # print("SF-TX = " + str(self.top_block.get_sf_tx()))
-                    # print("SF-RX = " + str(self.top_block.get_sf_rx()) + "\n")
+                    # print("SF.TX = " + str(self.top_block.get_sf_tx()))
+                    # print("SF.RX = " + str(self.top_block.get_sf_rx()) + "\n")
 
-                    # print("CR-TX = " + str(self.top_block.get_cr_tx()) )
-                    # print("CR-RX = " + str(self.top_block.get_cr_rx()) + "\n")
+                    # print("CR.TX = " + str(self.top_block.get_cr_tx()) )
+                    # print("CR.RX = " + str(self.top_block.get_cr_rx()) + "\n")
 
-                    # print("BW-TX = " + str(self.top_block.get_bw_tx()))
-                    # print("BW-RX = " + str(self.top_block.get_bw_rx()) + "\n")
+                    # print("BW.TX = " + str(self.top_block.get_bw_tx()))
+                    # print("BW.RX = " + str(self.top_block.get_bw_rx()) + "\n")
 
-                    # print("CRC-TX = " + str(self.top_block.get_has_crc_tx()))
-                    # print("CRC-RX = " + str(self.top_block.get_has_crc_rx()) + "\n")
+                    # print("CRC.TX = " + str(self.top_block.get_has_crc_tx()))
+                    # print("CRC.RX = " + str(self.top_block.get_has_crc_rx()) + "\n")
             else:
                 print("TX UDP General - Unknown cmd")
 
