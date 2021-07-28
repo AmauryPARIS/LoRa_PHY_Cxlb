@@ -35,6 +35,14 @@ namespace gr {
     add_crc_impl::~add_crc_impl()
     {}
 
+    bool to_bool(std::string str) { // Converts String to boolean, case insensitive
+      std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+      std::istringstream is(str);
+      bool b;
+      is >> std::boolalpha >> b;
+      return b;
+    }
+
     void
     add_crc_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
     {
@@ -47,7 +55,8 @@ namespace gr {
 
             if (((crcValue & 0x8000) >> 8) ^ (newByte & 0x80)){
                 crcValue = (crcValue << 1)  ^ 0x1021;
-            }else{
+            }
+            else{
                 crcValue = (crcValue << 1);
             }
             newByte <<= 1;
@@ -77,7 +86,13 @@ namespace gr {
         end_N = abs_N + noutput_items;
         tags.clear();
         get_tags_in_range(tags, 0, abs_N, end_N);
-        // NO PARAMETERS TO CHANGE IN CRC
+        for (it = tags.begin(); it != tags.end(); ++it) {
+          key = pmt::symbol_to_string((*it).key);
+          if (key == "CRC"){
+            value = to_bool(pmt::symbol_to_string((*it).value));
+            m_has_crc = value;
+          }
+        }
       }
 
 

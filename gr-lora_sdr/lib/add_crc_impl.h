@@ -16,7 +16,7 @@ namespace gr {
         std::vector<tag_t> tags;
         std::vector<tag_t>::iterator it;
         std::string key;
-        int value;
+        bool value;
 
         void msg_handler(pmt::pmt_t message);
         unsigned int crc16(unsigned int crcValue, unsigned char newByte);

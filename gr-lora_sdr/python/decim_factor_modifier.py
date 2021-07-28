@@ -19,7 +19,7 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-import numpy
+import numpy as np
 from gnuradio import gr
 
 class decim_factor_modifier(gr.sync_block):

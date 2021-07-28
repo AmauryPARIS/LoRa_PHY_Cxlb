@@ -17,10 +17,10 @@
     <name>GS_tx_cmd</name>
     <type>message</type>
   </source>
-  <source>
+  <!-- <source>
     <name>GS_rx_cmd</name>
     <type>message</type>
-  </source>
+  </source> -->
   <source>
     <name>GS_sink_cmd</name>
     <type>message</type>
