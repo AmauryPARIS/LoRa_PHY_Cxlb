@@ -110,14 +110,6 @@ class general_supervisor(gr.basic_block):
                     print("{} value must be a float".format(cmd))
                     print("Processing the remaining commands\n")
                     continue
-                print("DEBUG: New value of float cmd : " + newvalue)
-            # elif cmd in bool_param_cmd:
-            #     try:
-            #         bool(newvalue)
-            #     except ValueError:
-            #         print("{} value must be a boolean".format(cmd))
-            #         print("Processing the remaining commands\n")
-            #         continue
             
             elif cmd in str_param_cmd:
                 if len(newvalue)<1:
@@ -165,8 +157,6 @@ class general_supervisor(gr.basic_block):
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("rate"), pmt.from_float(float(newvalue)))                
                 sink = True
 
-                # Debug print - TODO : erase
-                print("DEBUG: BW modification added to the tx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")
             elif cmd == "CRC.TX":
                 if not int(newvalue) in [0, 1]:
                     # TODO: Add real error and way to return this error to the upper layer
@@ -174,9 +164,7 @@ class general_supervisor(gr.basic_block):
                     return 1
                 else:
                     tx_parameters += ("CRC" + "_" + str(newvalue) + "|")
-
-                    # Debug print - TODO : erase
-                    print("DEBUG: CRC modification added to the tx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")            
+          
 
         ## RX cmd
             elif cmd == "BW.RX":
