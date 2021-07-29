@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser(description="LORA Phy layer Python Multiple Nod
 # Upper layer parameters
 parser.add_argument('node_id', help="Unique node identifier")
 parser.add_argument('--period', type=float, \
-    help="Period of the transmitting/receiving cycle in seconds", default=1.5)
+    help="Period of the transmitting/receiving cycle in seconds", default=2)
 parser.add_argument('--random', type = bool, default=True, \
     help="True = Transmit at a random timing in TX window, False = transmit at the beginning of the TX window")
 parser.add_argument('--N', type = int, default=10, help="Number of transmitted message")
@@ -29,12 +29,12 @@ parser.add_argument('--PORT_NO_RX', type = int, default=6790, help="UDP RX port 
 # Physical layer parameters - to be tested
 parser.add_argument('--SF.TX', type=int, help="Spreading factor", default=7)
 parser.add_argument('--CR.TX', type=int, help="Coding Rate", default=4)
-# parser.add_argument('--CRC.TX', type = int, default=1, help="CRC presence, 1 = True, 0 = False")
+parser.add_argument('--CRC.TX', type = int, default=1, help="CRC presence, 1 = True, 0 = False")
 parser.add_argument('--G.TX', type = float, default=30, help="Gain for TX chain")
 parser.add_argument('--G.RX', type = float, default=20, help="Gain for RX chain")
-# parser.add_argument('--F.TX', type = float, default=910e6, help="USRP frequency for TX chain")
-# parser.add_argument('--F.RX', type = float, default=900e6, help="USRP frequency for RX chain")
-# parser.add_argument('--BW.TX', type = float, default=250e3, help="Bandwidth for TX chain")
+parser.add_argument('--F.TX', type = float, default=900e6, help="USRP frequency for TX chain")
+parser.add_argument('--F.RX', type = float, default=910e6, help="USRP frequency for RX chain")
+parser.add_argument('--BW.TX', type = float, default=250e3, help="Bandwidth for TX chain")
 # parser.add_argument('--BW.RX', type = float, default=900e6, help="Bandwidth for RX chain")
 
 # dyn_parameters = {  "CR.TX" : "Coding Rate", 

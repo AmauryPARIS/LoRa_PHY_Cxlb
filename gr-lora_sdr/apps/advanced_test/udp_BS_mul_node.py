@@ -17,7 +17,7 @@ parser.add_argument('--G.TX', type = float, default=30, help="Gain for TX chain"
 parser.add_argument('--G.RX', type = float, default=20, help="Gain for RX chain")
 parser.add_argument('--F.TX', type = float, default=910e6, help="USRP frequency for TX chain")
 parser.add_argument('--F.RX', type = float, default=900e6, help="USRP frequency for RX chain")
-parser.add_argument('--BW.TX', type = float, default=500e3, help="Bandwidth for TX chain")
+parser.add_argument('--BW.TX', type = float, default=250e3, help="Bandwidth for TX chain")
 # parser.add_argument('--BW.RX', type = float, default=900e6, help="Bandwidth for RX chain")
 
 # Parsing
