@@ -42,6 +42,7 @@ class tags_param_dyn(gr.sync_block):
     def handle_cmd(self, msg):
         start = 0
         msg_str = pmt.to_python(msg)
+        print(msg_str)
         while msg_str.find("|", start, len(msg_str)) != -1:
             cmd = msg_str[start:msg_str.find("|", start, len(msg_str))]
             self.tx_cmd.append(cmd)
@@ -50,6 +51,7 @@ class tags_param_dyn(gr.sync_block):
     def work(self, input_items, output_items):
         offset = self.nitems_written(0)
         for cmd in self.tx_cmd:
+            print("Cmd of tags_param_dyn" +  cmd)
             underscoreposition = cmd.find("_")
             parameter = pmt.intern(cmd[0:underscoreposition])
             value = pmt.intern(cmd[underscoreposition+1:len(cmd)])
@@ -58,6 +60,9 @@ class tags_param_dyn(gr.sync_block):
         self.frame_count += 1
         self.tx_cmd = []
 
+
         output_items[0][:] = input_items[0]
+        # print("DEBUG : Tags param dyn - {}".format(len(output_items[0])))
+
         return len(output_items[0])
 

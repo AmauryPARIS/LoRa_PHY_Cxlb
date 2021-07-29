@@ -89,7 +89,7 @@ namespace gr {
         for (it = tags.begin(); it != tags.end(); ++it) {
           key = pmt::symbol_to_string((*it).key);
           if (key == "CRC"){
-            value = to_bool(pmt::symbol_to_string((*it).value));
+            value = (stoi(pmt::symbol_to_string((*it).value)) == 1);
             m_has_crc = value;
           }
         }
@@ -129,6 +129,7 @@ namespace gr {
         tag.value = it->value;
         add_item_tag(0, tag);
       }
+      // std::cout << "DEBUG: Add CRC - " << noutput_items << "\n";
       return noutput_items;
     }
   } /* namespace lora */

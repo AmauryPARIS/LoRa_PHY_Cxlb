@@ -74,9 +74,12 @@ namespace gr {
               m_cr = value;
               // std::cout << "Header imp - New CR : " << value << "\n";
             } 
+            if (key == "CRC"){
+              m_has_crc = (stoi(pmt::symbol_to_string((*it).value)) == 1);
+            }
           }
         } // END EXTRACT TAGS FOR PARAMETERS DYNAMISM
-
+        
         if(m_impl_head){//no header to add
             memcpy(out,in,ninput_items[0]*sizeof(uint8_t));
             noutput_items = ninput_items[0];
@@ -113,6 +116,7 @@ namespace gr {
           tag.value = it->value;
           add_item_tag(0, tag);
         }
+        // std::cout << "DEBUG: Header - " << noutput_items << "\n";
         return noutput_items ;
     }
 

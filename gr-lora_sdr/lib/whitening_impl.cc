@@ -49,8 +49,9 @@ namespace gr {
         gr_vector_const_void_star &input_items,
         gr_vector_void_star &output_items)
     {
+      
         if(new_message){
-
+            
             uint8_t *out = (uint8_t *) output_items[0];
 
             for(uint i=0;i<m_payload.size();i++){
@@ -61,6 +62,7 @@ namespace gr {
             noutput_items=2*m_payload.size();
             m_payload.clear();
             new_message=false;
+            // std::cout << "DEBUG : Whitening - " << noutput_items << "\n";
         }
         else
             noutput_items=0;

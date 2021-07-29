@@ -67,6 +67,7 @@ class general_supervisor(gr.basic_block):
         int_param_cmd = [
                             "CR.TX", # CR
                             "SF.TX", # SF
+                            "CRC.TX"
                             # "CR.RX", # 0
                             # "SF.RX", # 0
                         ]
@@ -78,9 +79,9 @@ class general_supervisor(gr.basic_block):
                             "BW.TX", # BWTX
                             "BW.RX" # BWRX
                         ]
-        bool_param_cmd = [
-            "CRC.TX", # 0
-        ]
+        # bool_param_cmd = [
+        #     "CRC.TX", # 0
+        # ]
         no_param_cmd = ["print"]
         str_param_cmd = ["MSG"]
 
@@ -104,19 +105,19 @@ class general_supervisor(gr.basic_block):
             
             elif cmd in float_param_cmd:
                 try:
-                    float(newvalue)
+                    newvalue = str(int(float(newvalue)))
                 except ValueError:
                     print("{} value must be a float".format(cmd))
                     print("Processing the remaining commands\n")
                     continue
-            
-            elif cmd in bool_param_cmd:
-                try:
-                    bool(newvalue)
-                except ValueError:
-                    print("{} value must be a boolean".format(cmd))
-                    print("Processing the remaining commands\n")
-                    continue
+                print("DEBUG: New value of float cmd : " + newvalue)
+            # elif cmd in bool_param_cmd:
+            #     try:
+            #         bool(newvalue)
+            #     except ValueError:
+            #         print("{} value must be a boolean".format(cmd))
+            #         print("Processing the remaining commands\n")
+            #         continue
             
             elif cmd in str_param_cmd:
                 if len(newvalue)<1:
@@ -137,14 +138,18 @@ class general_supervisor(gr.basic_block):
 
 
             if cmd == "SF.TX":
-                tx_parameters += ("SF" + "_" + str(newvalue) + "|")
+                if not int(newvalue) in range(7, 13):
+                    # TODO: Add real error and way to return this error to the upper layer
+                    print("ERROR: Can only set the spreading factor to a integer value between 7 and 12")
+                else:
+                    tx_parameters += ("SF" + "_" + str(newvalue) + "|")
                 
             elif cmd == "CR.TX":
                 if not int(newvalue) in range(1, 5):
                     # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Can only set the coding rate to a integer value between 1 (corresponding to CR = 4/5) and 4 (corresponding to CR = 4/8)")
-                    return 1
-                tx_parameters += ("CR" + "_" + str(newvalue) + "|")
+                else:
+                    tx_parameters += ("CR" + "_" + str(newvalue) + "|")
 
             elif cmd == "BW.TX":
                 # self.top_block.set_bw_tx(float(newvalue))
@@ -163,12 +168,15 @@ class general_supervisor(gr.basic_block):
                 # Debug print - TODO : erase
                 print("DEBUG: BW modification added to the tx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")
             elif cmd == "CRC.TX":
-                # self.top_block.set_has_crc_tx(bool(newvalue))
+                if not int(newvalue) in [0, 1]:
+                    # TODO: Add real error and way to return this error to the upper layer
+                    print("ERROR: Can only set the CRC presence to 0 (false) or 1 (true)")
+                    return 1
+                else:
+                    tx_parameters += ("CRC" + "_" + str(newvalue) + "|")
 
-                tx_parameters += ("CRC" + "_" + str(newvalue) + "|")
-
-                # Debug print - TODO : erase
-                print("DEBUG: CRC modification added to the tx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")            
+                    # Debug print - TODO : erase
+                    print("DEBUG: CRC modification added to the tx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")            
 
         ## RX cmd
             elif cmd == "BW.RX":

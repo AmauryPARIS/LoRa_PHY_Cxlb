@@ -78,6 +78,9 @@ namespace gr {
             if (key == "SF"){
               m_sf = value;
               m_number_of_bins    =(uint32_t)(1u << m_sf);
+              // std::cout << "Interleaver imp - New SF : " << value << "\n";
+
+              // Temporary
               m_symbols_per_second = (double)m_bw/m_number_of_bins;
               m_samples_per_symbol = (uint32_t)(m_samp_rate / m_symbols_per_second);
 
@@ -85,8 +88,36 @@ namespace gr {
               m_upchirp.resize(m_samples_per_symbol);
 
               build_ref_chirps(&m_upchirp[0], &m_downchirp[0], m_sf);
-              // std::cout << "Interleaver imp - New SF : " << value << "\n";
+            }
+            if (key == "BW"){
+              m_bw = value;
+              m_samp_rate = value;
+              std::cout << "DEBUG: Modulate sample rate = " << (m_samp_rate) << "\n";
+              
+              // Temporary
+              m_symbols_per_second = (double)m_bw/m_number_of_bins;
+              m_samples_per_symbol = (uint32_t)(m_samp_rate / m_symbols_per_second);
+
+              m_downchirp.resize(m_samples_per_symbol);
+              m_upchirp.resize(m_samples_per_symbol);
+
+              build_ref_chirps(&m_upchirp[0], &m_downchirp[0], m_sf);
             } 
+
+            
+            // // Avoid unnecessary computations
+            
+            // if (std::distance(it, tags.end()) == 1){
+
+            //   m_symbols_per_second = (double)m_bw/m_number_of_bins;
+            //   m_samples_per_symbol = (uint32_t)(m_samp_rate / m_symbols_per_second);
+
+            //   m_downchirp.resize(m_samples_per_symbol);
+            //   m_upchirp.resize(m_samples_per_symbol);
+
+            //   build_ref_chirps(&m_upchirp[0], &m_downchirp[0], m_sf);
+            // }
+
           }
         }
 
@@ -122,6 +153,7 @@ namespace gr {
         }
         symb_cnt++;
         // std::cout << "modulate len : " << (int)(out[0]<<4)+out[1] <<  "\n";
+        // std::cout << "DEBUG: Modulate - " << noutput_items << "\n";
         return(noutput_items);
     }
 

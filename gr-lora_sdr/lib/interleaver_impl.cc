@@ -109,6 +109,8 @@ namespace gr {
         }
         std::cout<<std::endl;
         #endif
+
+
          //Do the actual interleaving
         for (int32_t i = 0; i < ppm ; i++) {
             for (int32_t j = 0; j < int(sf_app); j++) {
@@ -119,6 +121,7 @@ namespace gr {
               inter_bin[i][sf_app] = accumulate(inter_bin[i].begin(), inter_bin[i].end(),0)%2;
 
             out[i]=bool2int(inter_bin[i]);
+            
         }
 
          #ifdef GRLORA_DEBUG
@@ -141,6 +144,7 @@ namespace gr {
           tag.value = it->value;
           add_item_tag(0, tag); 
         }
+        // std::cout << "DEBUG : Interleaver - " << noutput_items << "\n";
         return ppm;
 
     }

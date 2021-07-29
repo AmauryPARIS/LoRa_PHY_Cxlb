@@ -81,7 +81,7 @@ namespace gr {
         tag.value = it->value;
         add_item_tag(0, tag); 
       }
-
+      // std::cout << "DEBUG: Gray mapping - " << noutput_items << "\n";
       return noutput_items;
     }
   } /* namespace lora */

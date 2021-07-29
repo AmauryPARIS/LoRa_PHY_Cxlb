@@ -67,7 +67,6 @@ namespace gr {
         
       }
 
-
       std::vector<bool> data_bin;
       bool p0,p1,p2,p3,p4;
       for(int i=0; i<noutput_items;i++){
@@ -105,6 +104,7 @@ namespace gr {
         tag.value = it->value;
         add_item_tag(0, tag); 
       }
+      // std::cout << "DEBUG : Hamming enc - " << noutput_items << "\n";
       return noutput_items;
     }
 
