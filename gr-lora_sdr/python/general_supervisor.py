@@ -79,9 +79,7 @@ class general_supervisor(gr.basic_block):
                             "BW.TX", # BWTX
                             "BW.RX" # BWRX
                         ]
-        # bool_param_cmd = [
-        #     "CRC.TX", # 0
-        # ]
+
         no_param_cmd = ["print"]
         str_param_cmd = ["MSG"]
 

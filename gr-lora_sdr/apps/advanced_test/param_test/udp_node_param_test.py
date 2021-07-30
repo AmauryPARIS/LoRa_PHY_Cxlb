@@ -24,17 +24,6 @@ parser.add_argument('--PORT_NO_TX', type = int, default=6788, help="UDP TX port 
 parser.add_argument('--PORT_NO_RX', type = int, default=6790, help="UDP RX port number")
 
 
-
-# dyn_parameters = {  "CR.TX" : "Coding Rate", 
-#                     "SF.TX" : "Spreading Factor",
-#                     "G.TX": "Gain for TX chain", 
-#                     "G.RX": "Gain for RX chain",
-#                     "F.TX": "USRP frequency for TX chain",
-#                     "F.RX": "USRP frequency for RX chain",
-#                     "MSG": "Data to transmit",
-#                     "print" : "Print in GNURADIO current parameters"
-#                 } 
-
 # Parsing
 args = parser.parse_args()
 cmd_dict = vars(args)

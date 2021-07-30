@@ -27,14 +27,11 @@ parser.add_argument('--PORT_NO_RX', type = int, default=6790, help="UDP RX port 
 
 
 # Physical layer parameters
-parser.add_argument('--SF.TX', type=int, help="Spreading factor", default=7)
 parser.add_argument('--CR.TX', type=int, help="Coding Rate", default=4)
 parser.add_argument('--CRC.TX', type = int, default=1, help="CRC presence, 1 = True, 0 = False")
 parser.add_argument('--G.TX', type = float, default=30, help="Gain for TX chain")
 parser.add_argument('--G.RX', type = float, default=20, help="Gain for RX chain")
-parser.add_argument('--F.TX', type = float, default=900e6, help="USRP frequency for TX chain")
-parser.add_argument('--F.RX', type = float, default=910e6, help="USRP frequency for RX chain")
-parser.add_argument('--BW.TX', type = float, default=250e3, help="Bandwidth for TX chain")
+
 
 # dyn_parameters = {  "CR.TX" : "Coding Rate", 
 #                     "SF.TX" : "Spreading Factor",
