@@ -144,7 +144,6 @@ namespace gr {
           tag.value = it->value;
           add_item_tag(0, tag); 
         }
-        // std::cout << "DEBUG : Interleaver - " << noutput_items << "\n";
         return ppm;
 
     }

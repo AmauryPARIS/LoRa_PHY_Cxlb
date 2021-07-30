@@ -62,7 +62,6 @@ namespace gr {
             noutput_items=2*m_payload.size();
             m_payload.clear();
             new_message=false;
-            // std::cout << "DEBUG : Whitening - " << noutput_items << "\n";
         }
         else
             noutput_items=0;

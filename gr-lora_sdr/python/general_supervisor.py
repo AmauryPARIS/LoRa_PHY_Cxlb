@@ -41,7 +41,6 @@ class general_supervisor(gr.basic_block):
         self.message_port_register_out(pmt.intern('GS_sink_cmd'))
         self.message_port_register_out(pmt.intern('GS_source_cmd'))
         self.message_port_register_out(pmt.intern('GS_msg'))
-        # self.message_port_register_out(pmt.intern('GS_rx_cmd'))
     
     def set_top_block(self, block):
         if self.startup:
@@ -65,19 +64,17 @@ class general_supervisor(gr.basic_block):
         sink = False
 
         int_param_cmd = [
-                            "CR.TX", # CR
-                            "SF.TX", # SF
+                            "CR.TX", 
+                            "SF.TX", 
                             "CRC.TX"
-                            # "CR.RX", # 0
-                            # "SF.RX", # 0
                         ]
         float_param_cmd = [
-                            "G.TX", # GTX
-                            "G.RX", # GRX
-                            "F.TX", # FTX
-                            "F.RX", # FRX
-                            "BW.TX", # BWTX
-                            "BW.RX" # BWRX
+                            "G.TX", 
+                            "G.RX", 
+                            "F.TX", 
+                            "F.RX", 
+                            "BW.TX", 
+                            "BW.RX" 
                         ]
 
         no_param_cmd = ["print"]
@@ -123,30 +120,19 @@ class general_supervisor(gr.basic_block):
 
         ## TX cmd
 
-            # elif cmd in ["CR", "SF"]:
-            #     tx_parameters += (str(cmd) + "_" + str(newvalue) + "|")
-
-
             if cmd == "SF.TX":
                 if not int(newvalue) in range(7, 13):
-                    # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Can only set the spreading factor to a integer value between 7 and 12")
                 else:
                     tx_parameters += ("SF" + "_" + str(newvalue) + "|")
                 
             elif cmd == "CR.TX":
                 if not int(newvalue) in range(1, 5):
-                    # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Can only set the coding rate to a integer value between 1 (corresponding to CR = 4/5) and 4 (corresponding to CR = 4/8)")
                 else:
                     tx_parameters += ("CR" + "_" + str(newvalue) + "|")
 
             elif cmd == "BW.TX":
-                # self.top_block.set_bw_tx(float(newvalue))
-
-                # Sample rate is already set by set_bw
-                # self.top_block.set_samp_rate(int(newvalue)) 
-
                 # Prepare a BW tag
                 tx_parameters += ("BW_" + str(newvalue) + "|")
                 
@@ -157,46 +143,24 @@ class general_supervisor(gr.basic_block):
 
             elif cmd == "CRC.TX":
                 if not int(newvalue) in [0, 1]:
-                    # TODO: Add real error and way to return this error to the upper layer
                     print("ERROR: Can only set the CRC presence to 0 (false) or 1 (true)")
                     return 1
                 else:
                     tx_parameters += ("CRC" + "_" + str(newvalue) + "|")
           
-
-        ## RX cmd
-            elif cmd == "BW.RX":
-                # self.top_block.set_bw_rx(float(newvalue))
-
-                # Sample rate variable (not the tag) is already set by set_bw
-                # self.top_block.set_samp_rate(int(newvalue))
-
-                # Prepare a BW tag
-                rx_parameters += ("BW" + "_" + str(newvalue) + "|")
-
-                # Debug print - TODO : erase
-                print("DEBUG: BW modification added to the rx_parameters list, should be caught by tags_param_dyn and converted to a tag\n")
-
-            
-            # No RX SF control is possible for now
-
         # USRP cmd
             elif cmd == "G.TX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("gain"), pmt.from_float(float(newvalue)))
                 sink = True
-                # self.top_block.set_TX_gain(float(newvalue))
             elif cmd == "G.RX":
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("gain"), pmt.from_float(float(newvalue)))
                 source = True
-                # self.top_block.set_RX_gain(float(newvalue))
             elif cmd == "F.TX":
                 sink_cmd = pmt.dict_add(sink_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))	
                 sink = True		
-                # self.top_block.set_tx_freq(float(newvalue))
             elif cmd == "F.RX":
                 source_cmd = pmt.dict_add(source_cmd, pmt.intern("freq"), pmt.from_float(float(newvalue)))			
                 source = True
-                # self.top_block.set_rx_freq(float(newvalue))
 
         # print
             elif cmd == "print":
@@ -210,9 +174,7 @@ class general_supervisor(gr.basic_block):
                 print("TX UDP General - Unknown cmd")
 
         if tx_parameters != "":
-            self.message_port_pub(pmt.intern('GS_tx_cmd'), pmt.intern(tx_parameters))
-        # if rx_parameters != "": # TODO
-        #     self.message_port_pub(pmt.intern('GS_rx_cmd'), pmt.intern(rx_parameters))        
+            self.message_port_pub(pmt.intern('GS_tx_cmd'), pmt.intern(tx_parameters))     
         if sink:
             self.message_port_pub(pmt.intern('GS_sink_cmd'), sink_cmd)
         if source:

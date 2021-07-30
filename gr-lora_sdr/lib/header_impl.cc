@@ -116,7 +116,6 @@ namespace gr {
           tag.value = it->value;
           add_item_tag(0, tag);
         }
-        // std::cout << "DEBUG: Header - " << noutput_items << "\n";
         return noutput_items ;
     }
 

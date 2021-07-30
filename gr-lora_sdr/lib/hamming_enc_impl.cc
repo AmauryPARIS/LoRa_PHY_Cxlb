@@ -104,7 +104,6 @@ namespace gr {
         tag.value = it->value;
         add_item_tag(0, tag); 
       }
-      // std::cout << "DEBUG : Hamming enc - " << noutput_items << "\n";
       return noutput_items;
     }
 
