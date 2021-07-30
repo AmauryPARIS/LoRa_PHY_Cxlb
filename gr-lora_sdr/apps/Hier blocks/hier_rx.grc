@@ -387,7 +387,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1040, 312)</value>
+      <value>(1120, 312)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -404,6 +404,49 @@
     <param>
       <key>minoutbuf</key>
       <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>lora_sdr_decim_factor_modifier</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(336, 156)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>lora_sdr_decim_factor_modifier_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>Sf</key>
+      <value>sf</value>
     </param>
   </block>
   <block>
@@ -426,7 +469,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(544, 280)</value>
+      <value>(624, 280)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -469,7 +512,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(920, 264)</value>
+      <value>(1000, 264)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -512,7 +555,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(304, 248)</value>
+      <value>(384, 248)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -567,7 +610,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(176, 200)</value>
+      <value>(160, 200)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -618,7 +661,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(432, 280)</value>
+      <value>(512, 280)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -657,7 +700,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(664, 312)</value>
+      <value>(744, 312)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -700,7 +743,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(784, 264)</value>
+      <value>(864, 264)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -751,7 +794,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(824, 32)</value>
+      <value>(904, 32)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -794,7 +837,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(456, 96)</value>
+      <value>(536, 96)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -888,7 +931,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1128, 324)</value>
+      <value>(1208, 324)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -931,7 +974,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 180)</value>
+      <value>(0, 180)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1169,6 +1212,12 @@
     <sink_key>valid_msg</sink_key>
   </connection>
   <connection>
+    <source_block_id>lora_sdr_decim_factor_modifier_0</source_block_id>
+    <sink_block_id>lora_sdr_pwr_est_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>lora_sdr_deinterleaver_0</source_block_id>
     <sink_block_id>lora_sdr_hamming_dec_0</sink_block_id>
     <source_key>0</source_key>
@@ -1224,7 +1273,7 @@
   </connection>
   <connection>
     <source_block_id>lora_sdr_frame_sync_0</source_block_id>
-    <sink_block_id>lora_sdr_pwr_est_0</sink_block_id>
+    <sink_block_id>lora_sdr_decim_factor_modifier_0</sink_block_id>
     <source_key>1</source_key>
     <sink_key>0</sink_key>
   </connection>

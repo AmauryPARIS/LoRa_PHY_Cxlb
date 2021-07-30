@@ -14,6 +14,11 @@ extern "C" {
   #include "kiss_fft.h"
 }
 
+// Modif
+#include <string>
+#include <map>
+// #include "/cortexlab/toolchains/current/include/gnuradio/runtime_types.h"
+
 namespace gr {
   namespace lora_sdr {
 
@@ -33,6 +38,18 @@ namespace gr {
              DOWNCHIRP2,
              QUARTER_DOWN
          };
+
+        //  bool startup;           ///< State of the block, used to set the top block    
+        //  gr::block top_block;    ///< Flowgraph using the frame_sync
+
+         std::vector<tag_t> tags;
+         std::vector<tag_t>::iterator it;
+         std::string key;
+         int value;
+
+         std::map<std::string, double> rx_cmd_map;
+         std::map<std::string, double>::iterator it_map;
+
          uint8_t m_state;        ///< Current state of the synchronization
          uint32_t m_bw;          ///< Bandwidth
          uint32_t m_samp_rate;   ///< Sampling rate
@@ -101,6 +118,15 @@ namespace gr {
          void header_pay_len_handler(pmt::pmt_t pay_len);
          void header_crc_handler(pmt::pmt_t crc);
          void frame_err_handler(pmt::pmt_t err);
+         
+         
+        //  /**
+        //   *  \brief  Sets the top block
+        //   *  \param  block
+        //   *          The top block
+        //   */
+        //  void set_top_block(gr::top_block block);
+
 
 
          /**

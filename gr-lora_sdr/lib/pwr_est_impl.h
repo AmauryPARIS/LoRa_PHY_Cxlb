@@ -29,6 +29,7 @@ namespace gr {
     class pwr_est_impl : public pwr_est
     {
      private:
+
       int m_sf; // Spreading factor
       float m_samp_rate; // Sample rate
       int m_bw; // Bandwidth

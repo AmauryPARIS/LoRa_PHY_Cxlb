@@ -118,6 +118,8 @@ namespace gr {
       int end_N = 0;
       int i = 0;
       std::string value;
+      std::string key;
+      int value_int;
       set_tag_propagation_policy(TPP_DONT);
       
       for (size_t i = 0; i < input_items.size(); i++) {
@@ -127,6 +129,7 @@ namespace gr {
         get_tags_in_range(tags, 0, abs_N, end_N);
         for (it = tags.begin(); it != tags.end(); ++it) {
           
+          // State detection
           if (pmt::symbol_to_string((*it).key) == "state"){
             value = pmt::symbol_to_string((*it).value);
             if (value == "FRAC_CFO_CORREC"){ 
@@ -191,6 +194,17 @@ namespace gr {
               // Noise state
               m_index_noise_sample_energy_history = (m_index_noise_sample_energy_history + 1 == m_count_noise_symbol + m_margin_noise_symbol ? 0: m_index_noise_sample_energy_history + 1);
               m_noise_sample_energy_history[m_index_noise_sample_energy_history] = compute_energy(in);
+            }
+          }
+
+          // Parameter detection
+          else {
+            key = pmt::symbol_to_string((*it).key);
+            value_int = stoi(pmt::symbol_to_string((*it).value));
+            if (key == "BW-RX"){
+              m_bw = (int)value_int;
+              m_samp_rate = (float)value_int;
+              m_samples_per_symbol = (uint32_t)(m_samp_rate * m_number_of_bins/ m_bw);
             }
           }
         }

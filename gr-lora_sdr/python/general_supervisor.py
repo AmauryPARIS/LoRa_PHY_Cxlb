@@ -41,7 +41,7 @@ class general_supervisor(gr.basic_block):
         self.message_port_register_out(pmt.intern('GS_sink_cmd'))
         self.message_port_register_out(pmt.intern('GS_source_cmd'))
         self.message_port_register_out(pmt.intern('GS_msg'))
-        # self.message_port_register_out(pmt.intern('GS_rx_cmd'))
+        self.message_port_register_out(pmt.intern('GS_rx_cmd'))
     
     def set_top_block(self, block):
         if self.startup:
@@ -211,8 +211,8 @@ class general_supervisor(gr.basic_block):
 
         if tx_parameters != "":
             self.message_port_pub(pmt.intern('GS_tx_cmd'), pmt.intern(tx_parameters))
-        # if rx_parameters != "": # TODO
-        #     self.message_port_pub(pmt.intern('GS_rx_cmd'), pmt.intern(rx_parameters))        
+        if rx_parameters != "":
+            self.message_port_pub(pmt.intern('GS_rx_cmd'), pmt.intern(rx_parameters))        
         if sink:
             self.message_port_pub(pmt.intern('GS_sink_cmd'), sink_cmd)
         if source:

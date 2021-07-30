@@ -128,25 +128,68 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-       const gr_complex *in = (const gr_complex *) input_items[0];
-       uint32_t *out = (uint32_t *) output_items[0];
-       if(is_first||received_cr){
-           //shift by -1 and use reduce rate if first block (header)
-           output.push_back(mod(get_symbol_val(in)-1,(1<<m_sf))/(is_first?4:1));
-           block_size = 4+(is_first? 4:m_cr);
-           if((output.size() == block_size)){
-               is_first = false;
-               memcpy(&out[0],&output[0],block_size*sizeof(uint32_t));
+      const gr_complex *in = (const gr_complex *) input_items[0];
+      uint32_t *out = (uint32_t *) output_items[0];
 
-               output.clear();
-               noutput_items = block_size;
-               }
-           else
-               noutput_items = 0;
-           consume_each(1);
-           return noutput_items;
-       }
-       return 0;
+      // START EXTRACT TAGS FOR PARAMETERS DYNAMISM
+      uint64_t abs_N, end_N;
+      set_tag_propagation_policy(TPP_DONT);
+      
+      for (size_t i = 0; i < input_items.size(); i++) {
+        abs_N = nitems_read(i);
+        end_N = abs_N + noutput_items;
+        tags.clear();
+        get_tags_in_range(tags, 0, abs_N, end_N);
+        for (it = tags.begin(); it != tags.end(); ++it) {
+          key = pmt::symbol_to_string((*it).key);
+          value = stoi(pmt::symbol_to_string((*it).value));
+          if (key == "BW"){
+            m_bw = value;
+            m_samp_rate = value;
+            m_samples_per_symbol = (uint32_t)(m_samp_rate*m_number_of_bins / m_bw);
+            is_first = true; // Verify if needed
+            
+            if (std::distance(it, tags.end()) == 1){
+              printf("DEBUG - fft_demod : Last iterator\n");
+              m_upchirp.resize(m_samples_per_symbol);
+              m_downchirp.resize(m_samples_per_symbol);
+              // FFT demodulation preparations
+              m_fft.resize(m_samples_per_symbol);
+              m_dechirped.resize(m_samples_per_symbol);
+            }
+
+          }
+        }
+      } // END EXTRACT TAGS FOR PARAMETERS DYNAMISM
+
+      // PROPAGATE TAGS WITH NEW OFFSET
+      for (it = tags.begin(); it != tags.end(); ++it) {
+        printf("DEBUG - fft_demod: tag propagation\n");
+        tag_t tag;
+        tag.offset = nitems_written(0);
+        tag.key = it->key;
+        tag.value = it->value;
+        add_item_tag(0, tag);
+      }
+       
+
+      if(is_first||received_cr){
+          //shift by -1 and use reduce rate if first block (header)
+          output.push_back(mod(get_symbol_val(in)-1,(1<<m_sf))/(is_first?4:1));
+          block_size = 4+(is_first? 4:m_cr);
+          if((output.size() == block_size)){
+              is_first = false;
+              memcpy(&out[0],&output[0],block_size*sizeof(uint32_t));
+
+              output.clear();
+              noutput_items = block_size;
+              }
+          else
+              noutput_items = 0;
+          consume_each(1);
+          return noutput_items;
+      }
+      return 0;
     }
 
   } /* namespace lora_sdr */

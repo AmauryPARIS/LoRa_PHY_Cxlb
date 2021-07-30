@@ -27,6 +27,9 @@ namespace gr {
       gr::io_signature::make(1, 1, sizeof(gr_complex)),
       gr::io_signature::make(1, 2, (1u << sf)*sizeof(gr_complex)))
       {
+        // startup             = true;
+        // top_block           = NULL;
+
         m_state             = DETECT;
         m_bw                = bandwidth;
         m_samp_rate         = samp_rate;
@@ -100,6 +103,16 @@ namespace gr {
      */
     frame_sync_impl::~frame_sync_impl()
     {}
+
+    // replace gr:top_block by pointers ? 
+    // Should work but is it possible to have a probe function call the function with self* as parameter?
+
+    // void frame_sync_impl::set_top_block(gr::block block){
+    //     if (startup){
+    //         top_block = block;
+    //         startup = false;
+    //     }
+    // }
 
     void frame_sync_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required){
         ninput_items_required[0] = usFactor*(m_samples_per_symbol+2);
@@ -341,6 +354,28 @@ namespace gr {
         gr_complex *out = (gr_complex *) output_items[OUT_DEMOD];
         gr_complex *out_all = (gr_complex *) output_items[OUT_ALL];
         
+        // START EXTRACT TAGS FOR PARAMETERS DYNAMISM
+        uint64_t abs_N, end_N;
+        set_tag_propagation_policy(TPP_DONT);
+
+
+
+
+        for (size_t i = 0; i < input_items.size(); i++) {
+            abs_N = nitems_read(i);
+            end_N = abs_N + noutput_items;
+            tags.clear();
+            get_tags_in_range(tags, 0, abs_N, end_N);
+            for (it = tags.begin(); it != tags.end(); ++it) {
+                key = pmt::symbol_to_string((*it).key);
+                value = stoi(pmt::symbol_to_string((*it).value));
+                if (key == "BW"){ // add here other parameters if needed
+                    value = stoi(pmt::symbol_to_string((*it).value));
+                    rx_cmd_map[key] = value;
+                }
+            }
+        } // END EXTRACT TAGS FOR PARAMETERS DYNAMISM
+
         tag_t tag;
         tag.offset = nitems_written(OUT_ALL);
         tag.key = pmt::string_to_symbol("state");
@@ -355,65 +390,112 @@ namespace gr {
         
 
         switch (m_state) {
-          case DETECT: {
-              
-              tag.value = pmt::string_to_symbol("DETECT");
-              add_item_tag(OUT_ALL, tag); 
+            case DETECT: {
+                printf("DEBUG: Detect state\n");
 
-              bin_idx_new = get_symbol_val(&in_down[0], &m_downchirp[0]);
-              
-              if(std::abs(bin_idx_new-bin_idx)<=1){//look for consecutive reference upchirps(with a margin of ±1)
-                  if(symbol_cnt==1)//we should also add the first symbol value
-                      k_hat+=bin_idx;
+                for(it_map=rx_cmd_map.begin(); it_map!=rx_cmd_map.end(); ++it_map){
+                    std::cout << "DEBUG: " << it_map->first << " => " << it_map->second << '\n';
+                
+                    
+                    if (it_map->first == "BW"){
 
-                  k_hat+=bin_idx_new;
-                  memcpy(&preamble_raw[m_samples_per_symbol*symbol_cnt],&in_down[0],m_samples_per_symbol*sizeof(gr_complex));
-                  symbol_cnt++;
-              }
-              else{
-                  memcpy(&preamble_raw[0],&in_down[0],m_samples_per_symbol*sizeof(gr_complex));
-                  symbol_cnt = 1;
-                  k_hat = 0;
-              }
-              bin_idx = bin_idx_new;
-              if(symbol_cnt == (int)(n_up-1)){
-                  m_state = SYNC;
-                  symbol_cnt = 0;
-                  cfo_sto_est = false;
+                        m_bw = (uint32_t) it_map->second;
+                        m_samp_rate = m_bw;
 
-                  k_hat = round(k_hat/(n_up-1));
+                    }
 
-                  //perform the coarse synchronization
-                  items_to_consume = usFactor*(m_samples_per_symbol-k_hat);
-              }
-              else
-                  items_to_consume = usFactor*m_samples_per_symbol;
-              produce(OUT_DEMOD,0);
-              produce(OUT_ALL,1);
-              break;
-          }
-          case SYNC:{
-              
-              tag.value = pmt::string_to_symbol("SYNC");
-              add_item_tag(OUT_ALL, tag); 
+                    // Additional test to check if there is another command (in order to do the resize operations just once)
+                    // if (std::distance(it_map, rx_cmd_map.end()) == 1){
+                        // m_samples_per_symbol = (uint32_t)(m_samp_rate * m_number_of_bins/ m_bw);
 
-              if(!cfo_sto_est){
-                  estimate_CFO(&preamble_raw[m_number_of_bins-k_hat]);
-                  estimate_STO();
-                  //create correction vector
-                  for (int n = 0; n< m_number_of_bins; n++) {
-                      CFO_frac_correc[n]= gr_expj(-2* M_PI *lambda_cfo/m_number_of_bins*n) ;
-                  }
-                  cfo_sto_est=true;
-              }
-              items_to_consume = usFactor*m_samples_per_symbol;
-              //apply cfo correction
-              volk_32fc_x2_multiply_32fc(&symb_corr[0],&in_down[0],&CFO_frac_correc[0],m_samples_per_symbol);
+                        // m_upchirp.resize(m_samples_per_symbol);
+                        // m_downchirp.resize(m_samples_per_symbol);
+                        // preamble_up.resize(n_up*m_samples_per_symbol);
+                        // CFO_frac_correc.resize(m_samples_per_symbol);
+                        // symb_corr.resize(m_samples_per_symbol);
+                        // preamble_raw.resize(n_up*m_samples_per_symbol);
+                    // }
 
-              bin_idx = get_symbol_val(&symb_corr[0], &m_downchirp[0]);
+                    // Resize each time (useful in this case since there is only one rx command)
+                    m_samples_per_symbol = (uint32_t)(m_samp_rate * m_number_of_bins/ m_bw);
 
-              switch (symbol_cnt) {
-                  case NET_ID1:{
+                    m_upchirp.resize(m_samples_per_symbol);
+                    m_downchirp.resize(m_samples_per_symbol);
+                    preamble_up.resize(n_up*m_samples_per_symbol);
+                    CFO_frac_correc.resize(m_samples_per_symbol);
+                    symb_corr.resize(m_samples_per_symbol);
+                    preamble_raw.resize(n_up*m_samples_per_symbol);
+
+                    tag_t tag_rx_cmd;
+                    tag_rx_cmd.offset = nitems_written(0);
+                    tag_rx_cmd.key = pmt::string_to_symbol(it_map->first);
+                    tag_rx_cmd.value = pmt::from_double(it_map->second);
+                    add_item_tag(OUT_DEMOD, tag_rx_cmd);
+                    add_item_tag(OUT_ALL, tag_rx_cmd);
+
+                    // Erase the cmd after treatment
+                    rx_cmd_map.erase(it_map->first);
+                }
+
+                
+                tag.value = pmt::string_to_symbol("DETECT");
+                add_item_tag(OUT_ALL, tag); 
+
+                bin_idx_new = get_symbol_val(&in_down[0], &m_downchirp[0]);
+                
+                if(std::abs(bin_idx_new-bin_idx)<=1){//look for consecutive reference upchirps(with a margin of ±1)
+                    if(symbol_cnt==1)//we should also add the first symbol value
+                        k_hat+=bin_idx;
+
+                    k_hat+=bin_idx_new;
+                    memcpy(&preamble_raw[m_samples_per_symbol*symbol_cnt],&in_down[0],m_samples_per_symbol*sizeof(gr_complex));
+                    symbol_cnt++;
+                }
+                else{
+                    memcpy(&preamble_raw[0],&in_down[0],m_samples_per_symbol*sizeof(gr_complex));
+                    symbol_cnt = 1;
+                    k_hat = 0;
+                }
+                bin_idx = bin_idx_new;
+                if(symbol_cnt == (int)(n_up-1)){
+                    m_state = SYNC;
+                    symbol_cnt = 0;
+                    cfo_sto_est = false;
+
+                    k_hat = round(k_hat/(n_up-1));
+
+                    //perform the coarse synchronization
+                    items_to_consume = usFactor*(m_samples_per_symbol-k_hat);
+                }
+                else
+                    items_to_consume = usFactor*m_samples_per_symbol;
+                produce(OUT_DEMOD,0);
+                produce(OUT_ALL,1);
+                break;
+            }
+            case SYNC:{
+                printf("DEBUG: Sync state\n");
+                
+                tag.value = pmt::string_to_symbol("SYNC");
+                add_item_tag(OUT_ALL, tag); 
+
+                if(!cfo_sto_est){
+                    estimate_CFO(&preamble_raw[m_number_of_bins-k_hat]);
+                    estimate_STO();
+                    //create correction vector
+                    for (int n = 0; n< m_number_of_bins; n++) {
+                        CFO_frac_correc[n]= gr_expj(-2* M_PI *lambda_cfo/m_number_of_bins*n) ;
+                    }
+                    cfo_sto_est=true;
+                }
+                items_to_consume = usFactor*m_samples_per_symbol;
+                //apply cfo correction
+                volk_32fc_x2_multiply_32fc(&symb_corr[0],&in_down[0],&CFO_frac_correc[0],m_samples_per_symbol);
+
+                bin_idx = get_symbol_val(&symb_corr[0], &m_downchirp[0]);
+
+                switch (symbol_cnt) {
+                    case NET_ID1:{
                         if(bin_idx==0||bin_idx==1||bin_idx==m_number_of_bins-1){// look for additional upchirps. Won't work if network identifier 1 equals 2^sf-1, 0 or 1!
                         }
                         else if (abs((int)bin_idx-(int)net_id_1)>1){ //wrong network identifier
@@ -481,53 +563,53 @@ namespace gr {
                         #endif
                     }
                 }
-              produce(OUT_DEMOD,0);
-              produce(OUT_ALL,1);
-              break;
-          }
-          case FRAC_CFO_CORREC:{
-              
-              //transmitt only useful symbols (at least 8 symbol)
-              if(symbol_cnt<symb_numb||!(received_cr&&received_crc&&received_pay_len)){
-                  tag.value = pmt::string_to_symbol("FRAC_CFO_CORREC");
-                  add_item_tag(OUT_ALL, tag); 
-
-                  //apply fractional cfo correction
-                  volk_32fc_x2_multiply_32fc(out,&in_down[0],&CFO_frac_correc[0],m_samples_per_symbol);
-                  #ifdef GRLORA_MEASUREMENTS
-                  sync_log<< std::fixed<<std::setprecision(10)<<determine_energy(&in_down[0])<<",";
-                  #endif
-                  #ifdef GRLORA_DEBUG
-                  if(symbol_cnt<numb_symbol_to_save)
+                produce(OUT_DEMOD,0);
+                produce(OUT_ALL,1);
+                break;
+            }
+            case FRAC_CFO_CORREC:{
+                printf("Debug: FRAC_CFO_CORREC state\n");
+                
+                //transmitt only useful symbols (at least 8 symbol)
+                if(symbol_cnt<symb_numb||!(received_cr&&received_crc&&received_pay_len)){
+                    tag.value = pmt::string_to_symbol("FRAC_CFO_CORREC");
+                    add_item_tag(OUT_ALL, tag); 
+                    //apply fractional cfo correction
+                    volk_32fc_x2_multiply_32fc(out,&in_down[0],&CFO_frac_correc[0],m_samples_per_symbol);
+                    #ifdef GRLORA_MEASUREMENTS
+                    sync_log<< std::fixed<<std::setprecision(10)<<determine_energy(&in_down[0])<<",";
+                    #endif
+                    #ifdef GRLORA_DEBUG
+                    if(symbol_cnt<numb_symbol_to_save)
                     memcpy(&last_frame[symbol_cnt*m_number_of_bins],&in_down[0],m_samples_per_symbol*sizeof(gr_complex));
-                  #endif
-                  items_to_consume = usFactor*m_samples_per_symbol;
-                  produce(OUT_DEMOD,1);
-                  produce(OUT_ALL,1);
-                  symbol_cnt++;
-              }
-              else{
+                    #endif
+                    items_to_consume = usFactor*m_samples_per_symbol;
+                    produce(OUT_DEMOD,1);
+                    produce(OUT_ALL,1);
+                    symbol_cnt++;
+                }
+                    else{
 
-                      tag.value = pmt::string_to_symbol("MSG_OVER");
-                      add_item_tag(OUT_ALL, tag); 
-                      m_state = DETECT;
-                      symbol_cnt = 1;
-                      items_to_consume = usFactor*m_samples_per_symbol;
-                      produce(OUT_DEMOD,0);
-                      produce(OUT_ALL,1);
-                      k_hat = 0;
-                      lambda_sto = 0;
-              }
-              break;
-          }
-          default: {
-              std::cerr << "[LoRa sync] WARNING : No state! Shouldn't happen\n";
-              break;
-          }
+                        tag.value = pmt::string_to_symbol("MSG_OVER");
+                        add_item_tag(OUT_ALL, tag); 
+                        m_state = DETECT;
+                        symbol_cnt = 1;
+                        items_to_consume = usFactor*m_samples_per_symbol;
+                        produce(OUT_DEMOD,0);
+                        produce(OUT_ALL,1);
+                        k_hat = 0;
+                        lambda_sto = 0;
+                    }
+                    break;
+                }
+                default: {
+                std::cerr << "[LoRa sync] WARNING : No state! Shouldn't happen\n";
+                break;
+                }
+            }
+
+            consume_each(items_to_consume);
+            return WORK_CALLED_PRODUCE;
         }
-
-        consume_each(items_to_consume);
-        return WORK_CALLED_PRODUCE;
-      }
-  } /* namespace lora_sdr */
+    } /* namespace lora_sdr */
 } /* namespace gr */

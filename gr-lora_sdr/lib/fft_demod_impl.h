@@ -12,12 +12,20 @@
 #include <lora_sdr/utilities.h>
 #include <lora_sdr/fft_demod.h>
 #include<lora_sdr/utilities.h>
+
+
 namespace gr {
   namespace lora_sdr {
 
     class fft_demod_impl : public fft_demod
     {
     private:
+
+      std::vector<tag_t> tags;
+      std::vector<tag_t>::iterator it;
+      std::string key;
+      int value;
+
       uint32_t m_bw;          ///< Bandwidth
       uint32_t m_samp_rate;   ///< Sampling rate
       uint8_t m_sf;           ///< Spreading factor
