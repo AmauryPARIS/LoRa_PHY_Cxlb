@@ -101,6 +101,33 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(360, 76)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>N</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>int(usrp_rx_samp_rate/bw)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(800, 4)</value>
     </param>
     <param>
@@ -419,7 +446,7 @@
     </param>
     <param>
       <key>n</key>
-      <value>int(usrp_rx_samp_rate/bw)</value>
+      <value>N</value>
     </param>
     <param>
       <key>type</key>

@@ -398,10 +398,8 @@ namespace gr {
                 
                     
                     if (it_map->first == "BW"){
-
                         m_bw = (uint32_t) it_map->second;
                         m_samp_rate = m_bw;
-
                     }
 
                     // Additional test to check if there is another command (in order to do the resize operations just once)
@@ -427,10 +425,10 @@ namespace gr {
                     preamble_raw.resize(n_up*m_samples_per_symbol);
 
                     tag_t tag_rx_cmd;
-                    tag_rx_cmd.offset = nitems_written(0);
+                    tag_rx_cmd.offset = nitems_written(1);
                     tag_rx_cmd.key = pmt::string_to_symbol(it_map->first);
                     tag_rx_cmd.value = pmt::from_double(it_map->second);
-                    add_item_tag(OUT_DEMOD, tag_rx_cmd);
+                    add_item_tag(OUT_DEMOD, tag_rx_cmd); // To debug: move the tag to the next message
                     add_item_tag(OUT_ALL, tag_rx_cmd);
 
                     // Erase the cmd after treatment

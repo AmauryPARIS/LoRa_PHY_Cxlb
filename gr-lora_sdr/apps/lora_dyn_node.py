@@ -44,9 +44,9 @@ class lora_dyn_node(gr.top_block):
         ##################################################
         # Variables
         ##################################################
+        self.usrp_rx_samp_rate = usrp_rx_samp_rate = 500e3
         self.bw = bw = 250000
         self.variable_function_probe_0 = variable_function_probe_0 = 0
-        self.usrp_rx_samp_rate = usrp_rx_samp_rate = 250e3
         self.samp_rate = samp_rate = bw
         self.pay_len = pay_len = 32
         self.mult_const = mult_const = 1
@@ -54,6 +54,7 @@ class lora_dyn_node(gr.top_block):
         self.has_crc = has_crc = True
         self.cr = cr = 4
         self.TX_gain = TX_gain = 30
+        self.N = N = int(usrp_rx_samp_rate/bw)
 
         ##################################################
         # Blocks
@@ -123,7 +124,7 @@ class lora_dyn_node(gr.top_block):
             udp_rx_port=udp_rx_port,
         )
         self.blocks_udp_source_0 = blocks.udp_source(gr.sizeof_char*1, '127.0.0.1', udp_tx_port, 1472, True)
-        self.blocks_keep_m_in_n_0 = blocks.keep_m_in_n(gr.sizeof_gr_complex, 1, int(usrp_rx_samp_rate/bw), 0)
+        self.blocks_keep_m_in_n_0 = blocks.keep_m_in_n(gr.sizeof_gr_complex, 1, N, 0)
 
 
 
@@ -191,32 +192,32 @@ class lora_dyn_node(gr.top_block):
     def set_udp_tx_port(self, udp_tx_port):
         self.udp_tx_port = udp_tx_port
 
+    def get_usrp_rx_samp_rate(self):
+        return self.usrp_rx_samp_rate
+
+    def set_usrp_rx_samp_rate(self, usrp_rx_samp_rate):
+        self.usrp_rx_samp_rate = usrp_rx_samp_rate
+        self.set_N(int(self.usrp_rx_samp_rate/self.bw))
+        self.uhd_usrp_source_0.set_samp_rate(self.usrp_rx_samp_rate)
+
     def get_bw(self):
         return self.bw
 
     def set_bw(self, bw):
         self.bw = bw
         self.set_samp_rate(self.bw)
+        self.set_N(int(self.usrp_rx_samp_rate/self.bw))
         self.uhd_usrp_source_0.set_bandwidth(self.bw, 0)
         self.uhd_usrp_source_0.set_bandwidth(self.bw, 1)
         self.uhd_usrp_sink_0.set_bandwidth(self.bw, 0)
         self.hier_lora_tx_0.set_bw(self.bw)
         self.hier_lora_rx_0.set_bw(self.bw)
-        self.blocks_keep_m_in_n_0.set_n(int(self.usrp_rx_samp_rate/self.bw))
 
     def get_variable_function_probe_0(self):
         return self.variable_function_probe_0
 
     def set_variable_function_probe_0(self, variable_function_probe_0):
         self.variable_function_probe_0 = variable_function_probe_0
-
-    def get_usrp_rx_samp_rate(self):
-        return self.usrp_rx_samp_rate
-
-    def set_usrp_rx_samp_rate(self, usrp_rx_samp_rate):
-        self.usrp_rx_samp_rate = usrp_rx_samp_rate
-        self.uhd_usrp_source_0.set_samp_rate(self.usrp_rx_samp_rate)
-        self.blocks_keep_m_in_n_0.set_n(int(self.usrp_rx_samp_rate/self.bw))
 
     def get_samp_rate(self):
         return self.samp_rate
@@ -272,6 +273,13 @@ class lora_dyn_node(gr.top_block):
         self.TX_gain = TX_gain
         self.uhd_usrp_sink_0.set_gain(self.TX_gain, 0)
 
+
+    def get_N(self):
+        return self.N
+
+    def set_N(self, N):
+        self.N = N
+        self.blocks_keep_m_in_n_0.set_n(self.N)
 
 
 def argument_parser():
