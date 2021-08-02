@@ -1,4 +1,9 @@
 #!/bin/bash
+source /cortexlab/toolchains/current/bin/cxlb-toolchain-user-conf
+# Source the path to lora_sdr
+. /root/LoRa_PHY_Cxlb.git/gr-lora_sdr/apps/setpaths.sh
+# And copy it to .bashrc so that it stays sourced
+cat /root/LoRa_PHY_Cxlb.git/gr-lora_sdr/apps/setpaths.sh >> /root/.bashrc
 sleep 5
 ARG1="$1"
 shift
