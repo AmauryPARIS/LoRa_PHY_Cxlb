@@ -91,13 +91,15 @@ On the `udp_Node` terminal, first choose your UDP TX and RX port. If the 2 USRPs
 Then enter one of the following keywords to change the corresponding parameter if needed.
 
 ```
-CR - Coding Rate
-SF - Spreading Factor
-GTX - Gain for TX chain
-GRX - Gain for RX chain
-FTX - USRP frequency for TX chain
-FRX - USRP frequency for RX chain
+CR.TX - Coding Rate
+SF.TX - Spreading Factor
+G.TX - Gain for TX chain
+G.RX - Gain for RX chain
+F.TX - USRP frequency for TX chain
+F.RX - USRP frequency for RX chain
 MSG - Data to transmit
 ```
 
 Enter the new value, then type `send` to send this new parameter to the physical layer. If a new MSG value is sent to the physical layer it is transmitted to the base station, which should respond with an acknowledgment.
+
+More advanced upper layers are available in the `advanced_test` folder. For more information read the README located in the `advanced test` folder.

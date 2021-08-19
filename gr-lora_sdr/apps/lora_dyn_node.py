@@ -312,11 +312,6 @@ def main(top_block_cls=lora_dyn_node, options=None):
 
     tb = top_block_cls(bw_rx=options.bw_rx, bw_tx=options.bw_tx, hist_avg=options.hist_avg, noise_elem=options.noise_elem, rx_freq=options.rx_freq, sf=options.sf, tx_freq=options.tx_freq, udp_rx_port=options.udp_rx_port, udp_tx_port=options.udp_tx_port)
     tb.start()
-    try:
-        raw_input('Press Enter to quit: ')
-    except EOFError:
-        pass
-    tb.stop()
     tb.wait()
 
 
