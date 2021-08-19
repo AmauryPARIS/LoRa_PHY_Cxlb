@@ -1,4 +1,4 @@
-import socket, json, time, argparse, random, select
+import socket, json, time, argparse, random, select, os, sys
 
 TRANSMIT_WINDOW_RATIO = 2/5
 RECEIVE_WINDOW_RATIO = 2/5
@@ -133,9 +133,28 @@ for i in range(upper_param["N"]):
     if (period - transmit_timing - elapsed > 0):
         # Node waits for the end of the period
         time.sleep(period - transmit_timing - elapsed)
-        
-        
-    
-print("{}/{} = {}% acknowledgements received".format(rx_counter,upper_param["N"],100*rx_counter/upper_param["N"]))
+
+# Open new result file   
+dir = "/root/results/"
+if not os.path.exists(dir):
+    os.mkdir(dir)
+
+filename="res_" + upper_param["node_id"] + ".txt"
+path = os.path.join(dir, filename)
+fres = open(path, mode="w")
+
+original_stdout = sys.stdout
+sys.stdout = fres
+
+# Fill in the important informations in the result file
+print(upper_param["node_id"])
+print(upper_param["N"])
+print(str(rx_counter))
+
+# Back to the original stdout
+sys.stdout = original_stdout
+fres.close()
+
+# print("{}/{} = {}% acknowledgements received".format(rx_counter,upper_param["N"],100*rx_counter/upper_param["N"]))
 
 

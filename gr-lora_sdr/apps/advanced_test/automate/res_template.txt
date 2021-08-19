@@ -1,0 +1,3 @@
+nodeID # node ID
+S # number of transmitted messages
+ACK # number of received acknoledgments
