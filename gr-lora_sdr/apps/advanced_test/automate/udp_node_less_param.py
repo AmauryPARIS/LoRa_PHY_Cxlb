@@ -32,16 +32,13 @@ parser.add_argument('--CRC.TX', type = int, default=1, help="CRC presence, 1 = T
 parser.add_argument('--G.TX', type = float, default=30, help="Gain for TX chain")
 parser.add_argument('--G.RX', type = float, default=20, help="Gain for RX chain")
 
+# Note of the parameters given directly to the physical layer
+parser.add_argument('--sf', type=int, help="Spreading factor of the physical layer", default=7)
+parser.add_argument('--tx-freq', type = float, default=900e6, help="USRP frequency of the TX chain")
+parser.add_argument('--rx-freq', type = float, default=910e6, help="USRP frequency of the RX chain")
+parser.add_argument('--bw-tx', type = float, default=250e3, help="Bandwidth of the TX chain")
+parser.add_argument('--bw-rx', type = float, default=250e3, help="Bandwidth of the RX chain")
 
-# dyn_parameters = {  "CR.TX" : "Coding Rate", 
-#                     "SF.TX" : "Spreading Factor",
-#                     "G.TX": "Gain for TX chain", 
-#                     "G.RX": "Gain for RX chain",
-#                     "F.TX": "USRP frequency for TX chain",
-#                     "F.RX": "USRP frequency for RX chain",
-#                     "MSG": "Data to transmit",
-#                     "print" : "Print in GNURADIO current parameters"
-#                 } 
 
 # Parsing
 args = parser.parse_args()
@@ -58,6 +55,12 @@ for key in upper_param_key:
     upper_param[key] = cmd_dict.pop(key)
 
 period = upper_param.get("period")
+
+# Phy layer parameters recap
+indications_param_key = ["sf", "tx_freq", "rx_freq", "bw_tx", "bw_rx"]
+indications_param = {}
+for key in indications_param_key:
+    indications_param[key] = cmd_dict.pop(key)
 
 # Parameters recap
 print('Upper layer parameters:')
@@ -141,20 +144,21 @@ if not os.path.exists(dir):
 
 filename="res_" + upper_param["node_id"] + ".txt"
 path = os.path.join(dir, filename)
-fres = open(path, mode="w")
+with open(path, mode="w") as res:
+    # Fill in the important informations in the result file
+    print(upper_param["node_id"], file=res)
+    print(upper_param["N"], file=res)
+    print(str(rx_counter), file=res) # ACK
+    print(upper_param["period"], file=res)
+    print(upper_param["random"], file=res)
+    print(indications_param["sf"], file=res)
+    print(indications_param["bw_rx"], file=res)
+    print(indications_param["bw_tx"], file=res)
+    print(indications_param["tx_freq"], file=res)
+    print(indications_param["rx_freq"], file=res)
+    print(cmd_dict["G.TX"], file=res)
+    print(cmd_dict["G.RX"], file=res)
 
-original_stdout = sys.stdout
-sys.stdout = fres
-
-# Fill in the important informations in the result file
-print(upper_param["node_id"])
-print(upper_param["N"])
-print(str(rx_counter))
-
-# Back to the original stdout
-sys.stdout = original_stdout
-fres.close()
-
-# print("{}/{} = {}% acknowledgements received".format(rx_counter,upper_param["N"],100*rx_counter/upper_param["N"]))
+print("{}/{} = {}% acknowledgements received".format(rx_counter,upper_param["N"],100*rx_counter/upper_param["N"]))
 
 

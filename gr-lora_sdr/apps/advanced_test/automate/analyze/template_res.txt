@@ -1,0 +1,12 @@
+nodeID # node ID
+N # number of transmitted messages
+ACK # number of received acknoledgments
+period # Period of emission (seconds)
+rand
+SF
+BW.TX
+BW.RX # should be identical to BW-TX, the node and the corresponding BS transmit with the same BW and SF
+F.TX
+F.RX
+G.TX
+G.RX
