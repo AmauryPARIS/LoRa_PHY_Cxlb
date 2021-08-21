@@ -42,17 +42,17 @@ parser.add_argument('--bw-rx', type = float, default=250e3, help="Bandwidth of t
 
 # Parsing
 args = parser.parse_args()
-cmd_dict = vars(args)
+init_dict = vars(args)
 
-PORT_NO_TX = cmd_dict.pop('PORT_NO_TX')
-PORT_NO_RX = cmd_dict.pop('PORT_NO_RX')
+PORT_NO_TX = init_dict.pop('PORT_NO_TX')
+PORT_NO_RX = init_dict.pop('PORT_NO_RX')
 IP_ADDRESS = "127.0.0.1"
 
 # Upper layer parameters
 upper_param_key = ["node_id", "period", "random", "N"]
 upper_param = {}
 for key in upper_param_key:
-    upper_param[key] = cmd_dict.pop(key)
+    upper_param[key] = init_dict.pop(key)
 
 period = upper_param.get("period")
 
@@ -60,7 +60,7 @@ period = upper_param.get("period")
 indications_param_key = ["sf", "tx_freq", "rx_freq", "bw_tx", "bw_rx"]
 indications_param = {}
 for key in indications_param_key:
-    indications_param[key] = cmd_dict.pop(key)
+    indications_param[key] = init_dict.pop(key)
 
 # Parameters recap
 print('Upper layer parameters:')
@@ -69,8 +69,8 @@ for key in upper_param.keys():
 
 print("\nPhysical layer parameters:")
 
-for key in cmd_dict.keys():
-    print("{}= {}".format(key, cmd_dict[key]))
+for key in init_dict.keys():
+    print("{}= {}".format(key, init_dict[key]))
 
 # Init PHY layer in GNU Radio
 
@@ -85,9 +85,9 @@ for key in cmd_dict.keys():
 
 socket_tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 socket_tx.connect((IP_ADDRESS, PORT_NO_TX))
-socket_tx.send(bytes(json.dumps(cmd_dict), 'UTF-8'))
+socket_tx.send(bytes(json.dumps(init_dict), 'UTF-8'))
 socket_tx.close()
-cmd_dict.clear()
+# init_dict.clear()
 
 
 print("\n")
@@ -156,9 +156,10 @@ with open(path, mode="w") as res:
     print(indications_param["bw_tx"], file=res)
     print(indications_param["tx_freq"], file=res)
     print(indications_param["rx_freq"], file=res)
-    print(cmd_dict["G.TX"], file=res)
-    print(cmd_dict["G.RX"], file=res)
+    print(init_dict["G.TX"], file=res)
+    print(init_dict["G.RX"], file=res)
 
 print("{}/{} = {}% acknowledgements received".format(rx_counter,upper_param["N"],100*rx_counter/upper_param["N"]))
 
+init_dict.clear()
 
