@@ -140,25 +140,32 @@ class perf_collector(gr.basic_block):
                 "crc_valid" 	:   str(self.valid_msg)
                 }
             print("RX UDP :" + str(received_dict))
-            out = bytes(unicode(json.dumps(received_dict), "utf-8"))
-            noutput_items = len(out)
-
-            self.CR = 0
-            self.err_corrected = 0
-            self.err_detected = 0
-            self.pay_len = 0
-            self.snr_avg = 0
-            self.msg_avg = 0
-            self.SNR = 0
-            self.MSG_Energy = 0
-            self.Noise_Energy = 0
-            self.valid_msg = False
-            self.msg = False
-            self.energy_ack = False
-            self.msg_ack = False
-            self.header_ack = False
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.connect(("127.0.0.1", self.port_UDP))
+            try :
+                out = bytes(unicode(json.dumps(received_dict), "utf-8"))
+            except:
+                print("Invalid message. This may be due to interference")
+                out = ""
                 
-            s.send(out)
-            s.close()
+
+            if out != "":
+                noutput_items = len(out)
+
+                self.CR = 0
+                self.err_corrected = 0
+                self.err_detected = 0
+                self.pay_len = 0
+                self.snr_avg = 0
+                self.msg_avg = 0
+                self.SNR = 0
+                self.MSG_Energy = 0
+                self.Noise_Energy = 0
+                self.valid_msg = False
+                self.msg = False
+                self.energy_ack = False
+                self.msg_ack = False
+                self.header_ack = False
+                s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                s.connect(("127.0.0.1", self.port_UDP))
+                    
+                s.send(out)
+                s.close()
