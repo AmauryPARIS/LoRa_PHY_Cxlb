@@ -21,4 +21,4 @@ The `automate` folder contains scripts that are adapted from the `mul_node` fold
 
 ## Parameter testing
 
-Finally, the `param_test` folder helps to test all PHY parameters dynamism, thanks to a given scenario where the scripts knows which acknoledgments it should receive or not. At the end of the scripts, the `udp_node_param_test.py` script prints out the missing/additional acknoledgments, as well as the acknoledgemnts where the CR or CRC parameters were not identical to the corresponding transmitted message.
+Finally, the `param_test` folder helps to test all PHY parameters dynamism, thanks to a given scenario where the script knows which acknoledgments it should receive or not. At the end of the scripts, the `udp_node_param_test.py` script prints out the missing/additional acknoledgments, as well as the acknoledgemnts where the CR or CRC parameters were not identical to the corresponding transmitted message.
