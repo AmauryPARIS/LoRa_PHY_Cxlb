@@ -83,7 +83,7 @@ namespace gr {
             return pay_cnt;
         }
         else{//explicit header to decode
-            std::cout<<"--------Header--------"<<std::endl;
+            // std::cout<<"--------Header--------"<<std::endl;
             m_payload_len=(in[0]<<4)+in[1];
             m_has_crc=in[2] & 1;
             m_cr = in[2]>>1;
@@ -97,9 +97,9 @@ namespace gr {
             bool c1=(in[0] & 0b0010)>>1 ^(in[1] & 0b0100)>>2^(in[1] & 0b0001)^(in[2] & 0b0100)>>2^(in[2] & 0b0010)>>1^(in[2] & 0b0001);
             bool c0=(in[0] & 0b0001) ^(in[1] & 0b0010)>>1^(in[2] & 0b1000)>>3^(in[2] & 0b0100)>>2^(in[2] & 0b0010)>>1^(in[2] & 0b0001);
 
-            std::cout<<"Payload length: "<<(int)m_payload_len<<std::endl;
-            std::cout<<"CRC presence: "<<(int)m_has_crc<<std::endl;
-            std::cout<<"Coding rate: "<<(int)m_cr<<std::endl;
+            // std::cout<<"Payload length: "<<(int)m_payload_len<<std::endl;
+            // std::cout<<"CRC presence: "<<(int)m_has_crc<<std::endl;
+            // std::cout<<"Coding rate: "<<(int)m_cr<<std::endl;
 
             if(header_chk-((int)(c4<<4)+(c3<<3)+(c2<<2)+(c1<<1)+c0)){
                 std::cout<<"Header checksum invalid!"<<std::endl<<std::endl;
@@ -107,7 +107,7 @@ namespace gr {
                 noutput_items = 0;
             }
             else{
-                std::cout<<"Header checksum valid!"<<std::endl<<std::endl;
+                // std::cout<<"Header checksum valid!"<<std::endl<<std::endl;
                 #ifdef GRLORA_DEBUG
                 std::cout<<"should have "<<(int)header_chk<<std::endl;
                 std::cout<<"got: "<<(int)(c4<<4)+(c3<<3)+(c2<<2)+(c1<<1)+c0<<std::endl;

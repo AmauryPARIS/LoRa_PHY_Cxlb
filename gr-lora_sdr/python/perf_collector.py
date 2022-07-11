@@ -139,7 +139,7 @@ class perf_collector(gr.basic_block):
                 "msg"       	:   str(self.msg),
                 "crc_valid" 	:   str(self.valid_msg)
                 }
-            print("RX UDP :" + str(received_dict))
+            # print("RX UDP :" + str(received_dict))
             try :
                 out = bytes(unicode(json.dumps(received_dict), "utf-8"))
             except:

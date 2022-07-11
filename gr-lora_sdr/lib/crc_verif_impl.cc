@@ -106,9 +106,9 @@ namespace gr {
                 m_char= (char)in_buff[i];
                 message_str = message_str+m_char;
             }
-            std::cout<<"msg: "<<message_str<<std::endl<<std::endl;
+            // std::cout<<"msg: "<<message_str<<std::endl<<std::endl;
             if(!(in_buff[m_payload_len]+(in_buff[m_payload_len+1]<<8)-m_crc)){
-                std::cout<<"CRC valid!"<<std::endl<<std::endl;
+                // std::cout<<"CRC valid!"<<std::endl<<std::endl;
                 message_port_pub(pmt::intern("valid"),pmt::mp("True"));
             }
             else{
