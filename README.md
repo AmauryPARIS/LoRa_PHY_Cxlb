@@ -103,3 +103,8 @@ MSG - Data to transmit
 Enter the new value, then type `send` to send this new parameter to the physical layer. If a new MSG value is sent to the physical layer it is transmitted to the base station, which should respond with an acknowledgment.
 
 More advanced upper layers are available in the `advanced_test` folder. For more information read the README located in the `advanced test` folder.
+
+
+
+
+Technical report available [here](https://hal.inria.fr/hal-03465187)
